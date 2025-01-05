@@ -47,6 +47,7 @@ typedef struct s_game
  *                         Function Prototypes
  *********************************************************************/
 
+int are_collectibles_collected(char **map);
 char    **parse_arguments_and_load_map(int argc, char **argv);
 int     validate_map_structure_and_player_position(char **map, t_map_state *state, int map_width, int map_height, int *player_x, int *player_y);
 char    **initialize_visited_map(int map_width, int map_height);

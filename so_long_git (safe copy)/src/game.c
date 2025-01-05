@@ -6,7 +6,7 @@
 /*   By: jbrol-ca <jbrol-ca@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/02 18:05:14 by jbrol-ca          #+#    #+#             */
-/*   Updated: 2025/01/05 17:05:44 by jbrol-ca         ###   ########.fr       */
+/*   Updated: 2025/01/05 17:20:16 by jbrol-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,25 @@ int game_is_running(t_game *game)
  * It handles key events like ESC and player movement.
  *********************************************************************/
 
+
+
+// Function to handle key press and check for "You Win"
+// Function to check if all collectibles are collected
+// Function to check if all collectibles are collected
+int are_collectibles_collected(char **map)
+{
+    for (int y = 0; map[y] != NULL; y++)
+    {
+        for (int x = 0; map[y][x] != '\0'; x++)
+        {
+            if (map[y][x] == 'C')  // If a collectible is found, return false
+                return 0;
+        }
+    }
+    return 1;  // All collectibles have been collected
+}
+
+// Function to handle key press and check for "You Win"
 int handle_key_press(int keycode, t_game *game)
 {
     ft_printf("Key pressed: %d\n", keycode);  // Debugging print
@@ -113,33 +132,47 @@ int handle_key_press(int keycode, t_game *game)
     // If the player is moving over the exit ('E'), check adjacent cell and "jump" over it
     if (game->map[new_player_y][new_player_x] == 'E')
     {
-        ft_printf("Player is jumping over the exit at (%d, %d)\n", new_player_x, new_player_y);
+        // Check if all collectibles are collected
+        int all_collectibles_collected = are_collectibles_collected(game->map);
 
-        // Check adjacent cell depending on movement direction
-        int next_x = new_player_x;
-        int next_y = new_player_y;
-
-        // Determine the adjacent cell based on the movement direction
-        if (keycode == KEY_UP)
-            next_y -= 1;
-        else if (keycode == KEY_DOWN)
-            next_y += 1;
-        else if (keycode == KEY_LEFT)
-            next_x -= 1;
-        else if (keycode == KEY_RIGHT)
-            next_x += 1;
-
-        // Ensure the next cell is a valid space ('0') or within bounds
-        if (next_x < 0 || next_x >= (int)ft_strlen(game->map[0]) || next_y < 0 || next_y >= ft_strarr_len(game->map) ||
-            game->map[next_y][next_x] == '1')  // Wall or out of bounds
+        // If all collectibles are collected, allow the player to "collect" the exit and end the game
+        if (all_collectibles_collected)
         {
-            ft_printf("Cannot jump over the exit. Blocked by wall or out of bounds.\n");
-            return (0);  // Block the movement
+            ft_printf("You Win! All collectibles collected.\n");
+            mlx_destroy_window(game->mlx, game->win);
+            game->win = NULL;
+            exit(0);  // Exit the game
         }
-        
-        // If adjacent cell is valid (floor), update position to the next cell
-        new_player_x = next_x;
-        new_player_y = next_y;
+        else
+        {
+            ft_printf("Player is jumping over the exit at (%d, %d)\n", new_player_x, new_player_y);
+
+            // Check adjacent cell depending on movement direction
+            int next_x = new_player_x;
+            int next_y = new_player_y;
+
+            // Determine the adjacent cell based on the movement direction
+            if (keycode == KEY_UP)
+                next_y -= 1;
+            else if (keycode == KEY_DOWN)
+                next_y += 1;
+            else if (keycode == KEY_LEFT)
+                next_x -= 1;
+            else if (keycode == KEY_RIGHT)
+                next_x += 1;
+
+            // Ensure the next cell is a valid space ('0') or within bounds
+            if (next_x < 0 || next_x >= (int)ft_strlen(game->map[0]) || next_y < 0 || next_y >= ft_strarr_len(game->map) ||
+                game->map[next_y][next_x] == '1')  // Wall or out of bounds
+            {
+                ft_printf("Cannot jump over the exit. Blocked by wall or out of bounds.\n");
+                return (0);  // Block the movement
+            }
+
+            // If adjacent cell is valid (floor), update position to the next cell
+            new_player_x = next_x;
+            new_player_y = next_y;
+        }
     }
 
     // Update player position if valid
@@ -154,6 +187,9 @@ int handle_key_press(int keycode, t_game *game)
 
     return (0);
 }
+
+
+
 
 
 
