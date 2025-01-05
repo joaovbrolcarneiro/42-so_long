@@ -6,7 +6,7 @@
 /*   By: jbrol-ca <jbrol-ca@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/02 16:57:56 by jbrol-ca          #+#    #+#             */
-/*   Updated: 2025/01/04 18:22:33 by jbrol-ca         ###   ########.fr       */
+/*   Updated: 2025/01/05 17:50:56 by jbrol-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,8 +97,6 @@ void render_game(t_game *game, char **map)
         x = 0;
         while (x < (int)ft_strlen(map[y]))
         {
-            // Debugging: Print tile and coordinates
-            ft_printf("Rendering tile: (%d, %d) - '%c'\n", x, y, map[y][x]);
 
             // Render floor tiles (0)
             if (map[y][x] == '0')

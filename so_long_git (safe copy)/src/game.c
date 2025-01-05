@@ -6,7 +6,7 @@
 /*   By: jbrol-ca <jbrol-ca@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/02 18:05:14 by jbrol-ca          #+#    #+#             */
-/*   Updated: 2025/01/05 17:43:50 by jbrol-ca         ###   ########.fr       */
+/*   Updated: 2025/01/05 17:55:48 by jbrol-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -220,25 +220,39 @@ void count_valid_move(t_game *game)
  * This function sets up the key hooks using mlx_key_hook.
  *********************************************************************/
 
+#include <mlx.h>
+
+// Function to handle the key press and window close event
+int handle_window_close(t_game *game)
+{
+    ft_printf("Window closed by user.\n");
+
+    // Cleanup the game and exit
+    mlx_destroy_window(game->mlx, game->win);
+    game->win = NULL;
+    exit(0);  // Exit the program cleanly
+    return (0);
+}
+
 void init_hooks(t_game *game)
 {
     // Hook the key press events to the handle_key_press function
     mlx_key_hook(game->win, handle_key_press, game);
+
+    // Hook for window close event (clicking the 'X' button)
+    mlx_hook(game->win, 17, 1L << 17, handle_window_close, game);  // Event 17 is for window close
+
+    // Hook for window resizing
+    mlx_hook(game->win, 12, 1L << 15, handle_resize, game);  // Event 12 is for resizing the window (optional)
 }
 
-/*int is_valid_move(t_game *game, int new_x, int new_y)
+// Function to handle window resizing (optional)
+int handle_resize(int width, int height)
 {
-    // Check if the new position is within the bounds of the map
-    if (new_x < 0 || new_x >= game->map_state.map_width || new_y < 0 || new_y >= game->map_state.map_height)
-        return 0;  // Invalid move (out of bounds)
-    
-    // Check if the new position is a wall (1)
-    if (game->map[new_y][new_x] == '1')
-        return 0;  // Invalid move (wall)
-
-    return 1;  // Valid move
+    ft_printf("Window resized to: %dx%d\n", width, height);
+    return (0);
 }
-*/
+
 
 
 
