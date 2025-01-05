@@ -6,7 +6,7 @@
 /*   By: jbrol-ca <jbrol-ca@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/02 18:05:14 by jbrol-ca          #+#    #+#             */
-/*   Updated: 2025/01/04 23:04:52 by jbrol-ca         ###   ########.fr       */
+/*   Updated: 2025/01/05 17:05:44 by jbrol-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,6 +110,38 @@ int handle_key_press(int keycode, t_game *game)
         return (0);
     }
 
+    // If the player is moving over the exit ('E'), check adjacent cell and "jump" over it
+    if (game->map[new_player_y][new_player_x] == 'E')
+    {
+        ft_printf("Player is jumping over the exit at (%d, %d)\n", new_player_x, new_player_y);
+
+        // Check adjacent cell depending on movement direction
+        int next_x = new_player_x;
+        int next_y = new_player_y;
+
+        // Determine the adjacent cell based on the movement direction
+        if (keycode == KEY_UP)
+            next_y -= 1;
+        else if (keycode == KEY_DOWN)
+            next_y += 1;
+        else if (keycode == KEY_LEFT)
+            next_x -= 1;
+        else if (keycode == KEY_RIGHT)
+            next_x += 1;
+
+        // Ensure the next cell is a valid space ('0') or within bounds
+        if (next_x < 0 || next_x >= (int)ft_strlen(game->map[0]) || next_y < 0 || next_y >= ft_strarr_len(game->map) ||
+            game->map[next_y][next_x] == '1')  // Wall or out of bounds
+        {
+            ft_printf("Cannot jump over the exit. Blocked by wall or out of bounds.\n");
+            return (0);  // Block the movement
+        }
+        
+        // If adjacent cell is valid (floor), update position to the next cell
+        new_player_x = next_x;
+        new_player_y = next_y;
+    }
+
     // Update player position if valid
     game->player_x = new_player_x;
     game->player_y = new_player_y;
@@ -122,6 +154,9 @@ int handle_key_press(int keycode, t_game *game)
 
     return (0);
 }
+
+
+
 
 
 /* *********************************************************************
