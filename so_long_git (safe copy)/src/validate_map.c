@@ -6,7 +6,7 @@
 /*   By: jbrol-ca <jbrol-ca@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/30 19:57:11 by jbrol-ca          #+#    #+#             */
-/*   Updated: 2025/01/05 18:48:22 by jbrol-ca         ###   ########.fr       */
+/*   Updated: 2025/01/05 18:58:02 by jbrol-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,7 +124,8 @@ int validate_map(char **map, int x, int y, t_map_state *state, char **visited)
 {
     // Check if the map contains invalid characters
     if (!is_valid_character(map, state->map_width, state->map_height)) {
-        return 0; // Invalid map characters, exit the validation
+        ft_printf("Error: Map contains invalid characters\n");
+        return 0;
     }
 
     // Check for bounds, invalid cells, or already visited cells
@@ -148,8 +149,54 @@ int validate_map(char **map, int x, int y, t_map_state *state, char **visited)
         validate_map(map, x + directions[i][0], y + directions[i][1], state, visited);
     }
 
+    // After marking visited cells, check if all collectibles are reachable
+    if (!are_all_collectibles_reachable(map, x, y, state)) {
+        ft_printf("Error: Not all collectibles are reachable by the player\n");
+        return 0;
+    }
+
     return 1;
 }
+
+int are_all_collectibles_reachable(char **map, int player_x, int player_y, t_map_state *state)
+{
+    // Create a temporary visited map for reachability checks
+    char **visited = initialize_visited_map(state->map_width, state->map_height);
+    if (!visited)
+        return 0;
+
+    // Count reachable collectibles from player's starting position
+    int reachable_collectibles = count_reachable_collectibles(map, player_x, player_y, state, visited);
+
+    // Free the temporary visited map
+    clean_up_visited_map(visited, state->map_height);
+
+    // Compare reachable collectibles with total collectibles
+    return reachable_collectibles == state->collectibles;
+}
+
+int count_reachable_collectibles(char **map, int x, int y, t_map_state *state, char **visited)
+{
+    // Base case: Check for bounds, walls, or already visited cells
+    if (x < 0 || y < 0 || x >= state->map_width || y >= state->map_height || map[y][x] == '1' || visited[y][x])
+        return 0;
+
+    // Mark the current cell as visited
+    visited[y][x] = 1;
+
+    int count = 0;
+    if (map[y][x] == 'C')
+        count++;
+
+    // Recursive calls to check adjacent cells (right, left, down, up)
+    int directions[4][2] = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
+    for (int i = 0; i < 4; i++) {
+        count += count_reachable_collectibles(map, x + directions[i][0], y + directions[i][1], state, visited);
+    }
+
+    return count;
+}
+
 
 // Helper function to check for invalid characters in the entire map
 int is_valid_character(char **map, int map_width, int map_height)

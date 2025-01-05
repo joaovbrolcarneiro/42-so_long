@@ -48,6 +48,8 @@ typedef struct s_game
  *                         Function Prototypes
  *********************************************************************/
 
+int count_reachable_collectibles(char **map, int x, int y, t_map_state *state, char **visited);
+int are_all_collectibles_reachable(char **map, int player_x, int player_y, t_map_state *state);
 int is_valid_character(char **map, int map_width, int map_height);
 void count_valid_move(t_game *game);
 int are_collectibles_collected(char **map);
