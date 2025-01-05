@@ -6,7 +6,7 @@
 /*   By: jbrol-ca <jbrol-ca@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/02 18:05:14 by jbrol-ca          #+#    #+#             */
-/*   Updated: 2025/01/05 17:20:16 by jbrol-ca         ###   ########.fr       */
+/*   Updated: 2025/01/05 17:43:50 by jbrol-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,9 @@ int start_game(char **map)
     // Assign the map to the game structure
     game.map = map;
 
+    // Initialize the valid movements counter
+    game.valid_movements = 0;
+
     // Initialize the window
     if (!init_window(&game, map))
         return (ft_error("Error: Unable to initialize the window"));
@@ -41,6 +44,7 @@ int start_game(char **map)
     cleanup_game(&game);  // Cleanup after the game loop ends
     return (0);
 }
+
 
 /* *********************************************************************
  * Checks if the game is still running (window is open).
@@ -77,6 +81,7 @@ int are_collectibles_collected(char **map)
 }
 
 // Function to handle key press and check for "You Win"
+// Function to handle key press and check for valid movements
 int handle_key_press(int keycode, t_game *game)
 {
     ft_printf("Key pressed: %d\n", keycode);  // Debugging print
@@ -119,14 +124,14 @@ int handle_key_press(int keycode, t_game *game)
     if (new_player_x < 0 || new_player_x >= (int)ft_strlen(game->map[0]) || new_player_y < 0 || new_player_y >= ft_strarr_len(game->map))
     {
         ft_printf("Out of bounds. Player cannot move.\n");
-        return (0);
+        return (0);  // Invalid move
     }
 
     // Check if the destination is a wall ('1')
     if (game->map[new_player_y][new_player_x] == '1')
     {
         ft_printf("Hit a wall. Player cannot move.\n");
-        return (0);
+        return (0);  // Invalid move
     }
 
     // If the player is moving over the exit ('E'), check adjacent cell and "jump" over it
@@ -166,13 +171,19 @@ int handle_key_press(int keycode, t_game *game)
                 game->map[next_y][next_x] == '1')  // Wall or out of bounds
             {
                 ft_printf("Cannot jump over the exit. Blocked by wall or out of bounds.\n");
-                return (0);  // Block the movement
+                return (0);  // Block the movement, invalid
             }
 
             // If adjacent cell is valid (floor), update position to the next cell
             new_player_x = next_x;
             new_player_y = next_y;
         }
+    }
+
+    // Check if player is moving to a valid tile (floor '0') or jumping over exit
+    if (game->map[new_player_y][new_player_x] == '0' || game->map[new_player_y][new_player_x] == 'E')
+    {
+        count_valid_move(game);  // Increment valid movement counter
     }
 
     // Update player position if valid
@@ -187,6 +198,16 @@ int handle_key_press(int keycode, t_game *game)
 
     return (0);
 }
+
+// Function to increment valid movements counter
+void count_valid_move(t_game *game)
+{
+    game->valid_movements++;
+    ft_printf("Valid movement. Total valid moves: %d\n", game->valid_movements);
+}
+
+
+
 
 
 

@@ -29,6 +29,7 @@ typedef struct s_map_state {
 
 typedef struct s_game
 {
+    int     valid_movements;
     int     player_x;
     int     player_y;
     void    *mlx;
@@ -47,6 +48,7 @@ typedef struct s_game
  *                         Function Prototypes
  *********************************************************************/
 
+void count_valid_move(t_game *game);
 int are_collectibles_collected(char **map);
 char    **parse_arguments_and_load_map(int argc, char **argv);
 int     validate_map_structure_and_player_position(char **map, t_map_state *state, int map_width, int map_height, int *player_x, int *player_y);
