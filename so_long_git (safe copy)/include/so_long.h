@@ -48,6 +48,7 @@ typedef struct s_game
  *                         Function Prototypes
  *********************************************************************/
 
+int is_valid_character(char **map, int map_width, int map_height);
 void count_valid_move(t_game *game);
 int are_collectibles_collected(char **map);
 char    **parse_arguments_and_load_map(int argc, char **argv);

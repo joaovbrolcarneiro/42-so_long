@@ -6,7 +6,7 @@
 /*   By: jbrol-ca <jbrol-ca@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/30 19:57:11 by jbrol-ca          #+#    #+#             */
-/*   Updated: 2025/01/04 15:38:39 by jbrol-ca         ###   ########.fr       */
+/*   Updated: 2025/01/05 18:48:22 by jbrol-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,8 +119,14 @@ int validate_map(char **map, int x, int y, t_map_state *state) {
     return 1;
 }*/
 
+// Function to validate the map
 int validate_map(char **map, int x, int y, t_map_state *state, char **visited)
 {
+    // Check if the map contains invalid characters
+    if (!is_valid_character(map, state->map_width, state->map_height)) {
+        return 0; // Invalid map characters, exit the validation
+    }
+
     // Check for bounds, invalid cells, or already visited cells
     if (x < 0 || y < 0 || x >= state->map_width || y >= state->map_height || map[y][x] == '1' || visited[y][x])
         return 0; // Out of bounds, wall ('1'), or already visited cell
@@ -145,6 +151,19 @@ int validate_map(char **map, int x, int y, t_map_state *state, char **visited)
     return 1;
 }
 
+// Helper function to check for invalid characters in the entire map
+int is_valid_character(char **map, int map_width, int map_height)
+{
+    for (int i = 0; i < map_height; i++) {
+        for (int j = 0; j < map_width; j++) {
+            if (map[i][j] != 'P' && map[i][j] != 'C' && map[i][j] != '0' && map[i][j] != '1' && map[i][j] != 'E') {
+                ft_printf("Invalid character '%c' found at (%d, %d)\n", map[i][j], j, i);
+                return 0; // Return error if invalid character is found
+            }
+        }
+    }
+    return 1; // All characters are valid
+}
 
 
 
