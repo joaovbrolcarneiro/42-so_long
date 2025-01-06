@@ -6,18 +6,18 @@
 /*   By: jbrol-ca <jbrol-ca@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/30 19:59:02 by jbrol-ca          #+#    #+#             */
-/*   Updated: 2025/01/06 20:34:31 by jbrol-ca         ###   ########.fr       */
+/*   Updated: 2025/01/06 22:16:13 by jbrol-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
 
-
 int	main(int argc, char **argv)
 {
-	char	**map;
-	t_game	game;
-	char	**visited;
+	char			**map;
+	t_game			game;
+	char			**visited;
+	t_validation	validation;
 
 	map = parse_arguments_and_load_map(argc, argv);
 	if (!map)
@@ -26,27 +26,28 @@ int	main(int argc, char **argv)
 	game.map_state.map_height = ft_strarr_len(map);
 	if (!validate_map_struct_and_plyr_pos(map, &game.player_x, &game.player_y))
 		return (1);
-	init_st(&game.map_state, game.map_state.map_width, \
-	game.map_state.map_height, map);
-	visited = initialize_visited_map (game.map_state.map_width, \
-	game.map_state.map_height);
-	if (!visited)
+	init_st(&game.map_state, game.map_state.map_width, game.map_state.map_height, map);
+	if (!(visited = i_vm(game.map_state.map_width, game.map_state.map_height)))
 		return (1);
-	if (!check_map_validity(map, game.player_x, game.player_y, \
-	&game.map_state, visited))
+	validation.game = &game;
+	validation.map = map;
+	validation.state = &game.map_state;
+	validation.visited = visited;
+	if (!check_map_validity(&validation))
 		return (1);
 	clean_up_visited_map(visited, game.map_state.map_height);
 	start_game(map);
 	return (0);
 }
 
-int	check_map_validity(char **map, int player_x, int player_y, t_map_state *state, char **visited)
+
+int check_map_validity(t_validation *validation)
 {
-	if (!validate_map(map, player_x, player_y, state, visited))
-		return (print_error_and_return(visited, state->map_height));
-	if (state->collectibles == 0 || state->exit_found == 0)
-		return (print_error_and_return(visited, state->map_height));
-	return (1);
+    if (!validate_map(validation->map, validation->game->player_x, validation->game->player_y, validation->state, validation->visited))
+        return (print_error_and_return(validation->visited, validation->state->map_height));
+    if (validation->state->collectibles == 0 || validation->state->exit_found == 0)
+        return (print_error_and_return(validation->visited, validation->state->map_height));
+    return (1);
 }
 
 void	init_st(t_map_state *state, int map_width, int map_height, char **map)
@@ -94,7 +95,7 @@ int	validate_map_struct_and_plyr_pos(char **map, int *player_x, int *player_y)
 	return (1);
 }
 
-char	**initialize_visited_map(int map_width, int map_height)
+char	**i_vm(int map_width, int map_height)
 {
 	char	**visited;
 	int		i;

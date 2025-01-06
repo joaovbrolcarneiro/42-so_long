@@ -6,7 +6,7 @@
 /*   By: jbrol-ca <jbrol-ca@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/30 19:57:11 by jbrol-ca          #+#    #+#             */
-/*   Updated: 2025/01/05 18:58:02 by jbrol-ca         ###   ########.fr       */
+/*   Updated: 2025/01/06 22:16:27 by jbrol-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -161,7 +161,7 @@ int validate_map(char **map, int x, int y, t_map_state *state, char **visited)
 int are_all_collectibles_reachable(char **map, int player_x, int player_y, t_map_state *state)
 {
     // Create a temporary visited map for reachability checks
-    char **visited = initialize_visited_map(state->map_width, state->map_height);
+    char **visited = i_vm(state->map_width, state->map_height);
     if (!visited)
         return 0;
 

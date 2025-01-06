@@ -44,6 +44,15 @@ typedef struct s_game
     char    **map; // Add map member
 }   t_game;
 
+typedef struct s_validation {
+    char **map;
+    t_game *game;          // Use t_game instead of t_player
+    t_map_state *state;
+    char **visited;
+} t_validation;
+
+
+
 /* *********************************************************************
  *                         Function Prototypes
  *********************************************************************/
@@ -51,8 +60,7 @@ typedef struct s_game
 
 int	validate_boundaries(char **map);
 int validate_map_structure(char **map);
-int check_map_validity(char **map, int player_x, int player_y,
-                        t_map_state *state, char **visited);
+int check_map_validity(t_validation *validation);
 void	init_st(t_map_state *state, int map_width, int map_height, char **map);
 int print_error_and_return(char **visited, int map_height);
 int count_reachable_collectibles(char **map, int x, int y, t_map_state *state, char **visited);
@@ -62,7 +70,7 @@ void count_valid_move(t_game *game);
 int are_collectibles_collected(char **map);
 char    **parse_arguments_and_load_map(int argc, char **argv);
 int	validate_map_struct_and_plyr_pos(char **map, int *player_x, int *player_y);
-char    **initialize_visited_map(int map_width, int map_height);
+char    **i_vm(int map_width, int map_height);
 void    clean_up_visited_map(char **visited, int map_height);
 void update_map_position(char **map, int player_x, int player_y);
 int is_valid_move(t_game *game, int new_x, int new_y);
