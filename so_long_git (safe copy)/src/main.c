@@ -6,7 +6,7 @@
 /*   By: jbrol-ca <jbrol-ca@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/30 19:59:02 by jbrol-ca          #+#    #+#             */
-/*   Updated: 2025/01/06 20:28:16 by jbrol-ca         ###   ########.fr       */
+/*   Updated: 2025/01/06 20:34:31 by jbrol-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,97 +94,120 @@ int	validate_map_struct_and_plyr_pos(char **map, int *player_x, int *player_y)
 	return (1);
 }
 
-char **initialize_visited_map(int map_width, int map_height)
+char	**initialize_visited_map(int map_width, int map_height)
 {
-    char **visited;
-    int i;
-    int j;
+	char	**visited;
+	int		i;
+	int		j;
 
-    visited = (char **)malloc(sizeof(char *) * map_height);
-    if (!visited)
-    {
-        ft_printf("Error: Failed to allocate visited map\n");
-        return (NULL);
-    }
-
-    i = 0;
-    while (i < map_height)
-    {
-        visited[i] = (char *)malloc(sizeof(char) * map_width);
-        if (!visited[i])
-        {
-            ft_printf("Error: Failed to allocate visited map row\n");
-            free(visited);
-            return (NULL);
-        }
-
-        j = 0;
-        while (j < map_width)
-        {
-            visited[i][j] = 0;
-            j++;
-        }
-        i++;
-    }
-
-    return (visited);
+	visited = (char **)malloc(sizeof(char *) * map_height);
+	if (!visited)
+		return (ft_printf("Error: Failed to allocate visited map\n"), NULL);
+	i = 0;
+	while (i < map_height)
+	{
+		visited[i] = (char *)malloc(sizeof(char) * map_width);
+		if (!visited[i])
+			return (free(visited), ft_printf("Error!\n"), NULL);
+		j = 0;
+		while (j < map_width)
+			visited[i][j++] = 0;
+		i++;
+	}
+	return (visited);
 }
 
-void clean_up_visited_map(char **visited, int map_height)
+void	clean_up_visited_map(char **visited, int map_height)
 {
-    int i;
+	int	i;
 
-    i = 0;
-    while (i < map_height)
-    {
-        free(visited[i]);
-        i++;
-    }
-    free(visited);
+	i = 0;
+	while (i < map_height)
+	{
+		free(visited[i]);
+		i++;
+	}
+	free(visited);
 }
 
-char **load_map_from_file(const char *filename)
+static char	**handle_empty_file(char **map, int fd)
 {
-    char **map;
-    char *line;
-    int fd;
-    int i;
+	ft_printf("Error: File is empty or no valid lines found.\n");
+	free(map);
+	close(fd);
+	return (NULL);
+}
 
-    fd = open(filename, O_RDONLY);
-    if (fd < 0)
-    {
-        ft_printf("Error: Failed to open file %s\n", filename);
-        return (NULL);
-    }
+char	**load_map_from_file(const char *filename)
+{
+	char	**map;
+	char	*line;
+	int		fd;
+	int		i;
 
-    map = malloc(sizeof(char *) * MAX_MAP_ROWS);
-    if (!map)
-    {
-        ft_printf("Error: Memory allocation failed for map.\n");
-        close(fd);
-        return (NULL);
-    }
+	fd = open(filename, O_RDONLY);
+	if (fd < 0)
+		return (ft_printf("Error: Failed to open file %s\n", filename), NULL);
+	map = malloc(sizeof(char *) * MAX_MAP_ROWS);
+	if (!map)
+		return (ft_printf("Error: Memory allocation failed for map.\n"),
+			close(fd), NULL);
+	i = 0;
+	line = get_next_line(fd);
+	while (line != NULL)
+	{
+		strip_newline(line);
+		map[i++] = line;
+		line = get_next_line(fd);
+	}
+	if (i == 0)
+		return (handle_empty_file(map, fd));
+	map[i] = NULL;
+	close(fd);
+	return (map);
+}
 
-    i = 0;
-    while ((line = get_next_line(fd)) != NULL)
-    {
-        ft_printf("Read line %d: %s\n", i, line);
-        strip_newline(line);
-        map[i++] = line;
-    }
+int	validate_row_lengths(char **map)
+{
+	int		i;
+	size_t	row_length;
 
-    map[i] = NULL;
+	row_length = ft_strlen(map[0]);
+	i = 1;
+	while (map[i] != NULL)
+	{
+		if (ft_strlen(map[i]) != row_length)
+		{
+			ft_printf("Error: Inconsistent row lengths.\n");
+			return (0);
+		}
+		i++;
+	}
+	return (1);
+}
 
-    if (i == 0)
-    {
-        ft_printf("Error: File is empty or no valid lines found.\n");
-        free(map);
-        close(fd);
-        return (NULL);
-    }
+int	validate_boundaries(char **map)
+{
+	int		i;
+	size_t	row_length;
 
-    close(fd);
-    return (map);
+	row_length = ft_strlen(map[0]);
+	i = 0;
+	while (map[i] != NULL)
+	{
+		if (map[i][0] != '1' || map[i][row_length - 1] != '1')
+		{
+			ft_printf("Error!\n");
+			return (0);
+		}
+		if (i == 0 && map[i][i] != '1')
+		{
+			ft_printf("Error!\n");
+			return (0);
+		}
+		i++;
+	}
+	return (1);
 }
 
 int validate_map_structure(char **map)

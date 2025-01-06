@@ -48,6 +48,9 @@ typedef struct s_game
  *                         Function Prototypes
  *********************************************************************/
 
+
+int	validate_boundaries(char **map);
+int validate_map_structure(char **map);
 int check_map_validity(char **map, int player_x, int player_y,
                         t_map_state *state, char **visited);
 void	init_st(t_map_state *state, int map_width, int map_height, char **map);
