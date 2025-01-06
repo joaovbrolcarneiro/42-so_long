@@ -6,7 +6,7 @@
 /*   By: jbrol-ca <jbrol-ca@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/30 19:59:02 by jbrol-ca          #+#    #+#             */
-/*   Updated: 2025/01/06 18:19:30 by jbrol-ca         ###   ########.fr       */
+/*   Updated: 2025/01/06 18:51:24 by jbrol-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,30 +26,29 @@ int main(int argc, char **argv)
     map = parse_arguments_and_load_map(argc, argv);
     if (!map)
         return (1);
-
     map_width = ft_strlen(map[0]);
     map_height = ft_strarr_len(map);
-
     if (!validate_map_structure_and_player_position(map, &player_x, &player_y))
         return (1);
-
-    // Initialize game state
     init_state(&state, map_width, map_height, map);
-
     visited = initialize_visited_map(map_width, map_height);
     if (!visited)
         return (1);
-
-    if (!validate_map(map, player_x, player_y, &state, visited))
-        return print_error_and_return(visited, map_height);
-
-    if (state.collectibles == 0 || state.exit_found == 0)
-        return print_error_and_return(visited, map_height);
-
+    if (!check_map_validity(map, player_x, player_y, &state, visited))
+        return (1);
     clean_up_visited_map(visited, map_height);
     start_game(map);
-
     return (0);
+}
+
+int check_map_validity(char **map, int player_x, int player_y,
+                        t_map_state *state, char **visited)
+{
+    if (!validate_map(map, player_x, player_y, state, visited))
+        return (print_error_and_return(visited, state->map_height)); // Use state->map_height
+    if (state->collectibles == 0 || state->exit_found == 0)
+        return (print_error_and_return(visited, state->map_height)); // Use state->map_height
+    return (1);
 }
 
 

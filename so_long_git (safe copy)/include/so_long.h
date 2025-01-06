@@ -48,6 +48,8 @@ typedef struct s_game
  *                         Function Prototypes
  *********************************************************************/
 
+int check_map_validity(char **map, int player_x, int player_y,
+                        t_map_state *state, char **visited);
 void init_state(t_map_state *state, int map_width, int map_height, char **map);
 int print_error_and_return(char **visited, int map_height);
 int count_reachable_collectibles(char **map, int x, int y, t_map_state *state, char **visited);
