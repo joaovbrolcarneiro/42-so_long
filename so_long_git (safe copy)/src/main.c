@@ -6,7 +6,7 @@
 /*   By: jbrol-ca <jbrol-ca@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/30 19:59:02 by jbrol-ca          #+#    #+#             */
-/*   Updated: 2025/01/06 22:56:02 by jbrol-ca         ###   ########.fr       */
+/*   Updated: 2025/01/06 23:02:47 by jbrol-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,94 +134,6 @@ void	clean_up_visited_map(char **visited, int map_height)
 		i++;
 	}
 	free(visited);
-}
-
-static char	**handle_empty_file(char **map, int fd)
-{
-	ft_printf("Error: File is empty or no valid lines found.\n");
-	free(map);
-	close(fd);
-	return (NULL);
-}
-
-char	**load_map_from_file(const char *filename)
-{
-	char	**map;
-	char	*line;
-	int		fd;
-	int		i;
-
-	fd = open(filename, O_RDONLY);
-	if (fd < 0)
-		return (ft_printf("Error: Failed to open file %s\n", filename), NULL);
-	map = malloc(sizeof(char *) * MAX_MAP_ROWS);
-	if (!map)
-		return (ft_printf("Error: Memory allocation failed for map.\n"),
-			close(fd), NULL);
-	i = 0;
-	line = get_next_line(fd);
-	while (line != NULL)
-	{
-		strip_newline(line);
-		map[i++] = line;
-		line = get_next_line(fd);
-	}
-	if (i == 0)
-		return (handle_empty_file(map, fd));
-	map[i] = NULL;
-	close(fd);
-	return (map);
-}
-
-int	check_row_length(char **map, size_t row_length)
-{
-	int	i;
-
-	i = 1;
-	while (map[i] != NULL)
-	{
-		if (ft_strlen(map[i]) != row_length)
-		{
-			ft_printf("Error!\n");
-			return (0);
-		}
-		i++;
-	}
-	return (1);
-}
-
-int	check_top_boundary(char **map)
-{
-	int	i;
-
-	i = 0;
-	while (map[0][i] != '\0')
-	{
-		if (map[0][i] != '1')
-		{
-			ft_printf("Error!\n");
-			return (0);
-		}
-		i++;
-	}
-	return (1);
-}
-
-int	check_bottom_boundary(char **map, size_t row_length)
-{
-	int	i;
-
-	i = 0;
-	while (map[i] != NULL)
-	{
-		if (map[i][row_length - 1] != '1')
-		{
-			ft_printf("Error!\n");
-			return (0);
-		}
-		i++;
-	}
-	return (1);
 }
 
 int	check_side_boundaries(char **map, size_t row_length)

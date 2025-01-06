@@ -57,6 +57,7 @@ typedef struct s_validation {
  *                         Function Prototypes
  *********************************************************************/
 
+char	**handle_empty_file(char **map, int fd);
 int	count_player_and_exit(char **map, int *player_count, int *exit_count);
 int	check_row_length(char **map, size_t row_length);
 int	check_top_boundary(char **map);
