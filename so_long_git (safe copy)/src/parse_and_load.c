@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_and_load.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jbrol-ca <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: jbrol-ca <jbrol-ca@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 23:17:26 by jbrol-ca          #+#    #+#             */
-/*   Updated: 2025/01/06 23:17:31 by jbrol-ca         ###   ########.fr       */
+/*   Updated: 2025/01/06 23:37:22 by jbrol-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,31 +28,6 @@ char	**parse_arguments_and_load_map(int argc, char **argv)
 		return (NULL);
 	}
 	return (map);
-}
-
-char	**append_line_to_map(char **map, char *line)
-{
-	char	**new_map;
-	int		i;
-
-	if (!line)
-		return (map);
-	i = 0;
-	while (map && map[i])
-		i++;
-	new_map = (char **)malloc(sizeof(char *) * (i + 2));
-	if (!new_map)
-		return (NULL);
-	i = 0;
-	while (map && map[i])
-	{
-		new_map[i] = map[i];
-		i++;
-	}
-	new_map[i] = line;
-	new_map[i + 1] = NULL;
-	free(map);
-	return (new_map);
 }
 
 void	strip_newline(char *line)

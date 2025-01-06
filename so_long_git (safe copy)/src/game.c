@@ -6,7 +6,7 @@
 /*   By: jbrol-ca <jbrol-ca@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/02 18:05:14 by jbrol-ca          #+#    #+#             */
-/*   Updated: 2025/01/05 19:34:09 by jbrol-ca         ###   ########.fr       */
+/*   Updated: 2025/01/06 23:48:06 by jbrol-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,26 +46,7 @@ int start_game(char **map)
 }
 
 
-/* *********************************************************************
- * Checks if the game is still running (window is open).
- *********************************************************************/
 
-int game_is_running(t_game *game)
-{
-    if (game->win == NULL)
-        return (0);
-    return (1);
-}
-
-/* *********************************************************************
- * This function is called when a key is pressed.
- * It handles key events like ESC and player movement.
- *********************************************************************/
-
-
-
-// Function to handle key press and check for "You Win"
-// Function to check if all collectibles are collected
 // Function to check if all collectibles are collected
 int are_collectibles_collected(char **map)
 {

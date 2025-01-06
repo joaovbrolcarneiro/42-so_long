@@ -94,16 +94,12 @@ int     is_wall(const char *line);
 int     ft_printf(const char *format, ...);
 int     start_game(char **map);   // Game-related function prototypes
 int     init_window(t_game *game, char **map);
-int     game_is_running(t_game *game);
-void    handle_input(t_game *game);
 void    render_game(t_game *game, char **map);
 void    cleanup_game(t_game *game);
 int     find_player_x(char **map);
 int     find_player_y(char **map);
-char    **append_line_to_map(char **map, char *line);
 int		handle_key_press(int key, t_game *game);
 void init_hooks(t_game *game);
-void get_map_dimensions(char **map, int *width, int *height);
 // Function to handle the window close event (clicking the 'X' button)
 int handle_window_close(t_game *game);
 

@@ -6,7 +6,7 @@
 /*   By: jbrol-ca <jbrol-ca@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/30 20:14:26 by jbrol-ca          #+#    #+#             */
-/*   Updated: 2025/01/03 16:42:05 by jbrol-ca         ###   ########.fr       */
+/*   Updated: 2025/01/06 23:25:16 by jbrol-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,17 +27,6 @@ int	is_wall(const char *line)
 		line++;
 	}
 	return (1);
-}
-
-void get_map_dimensions(char **map, int *width, int *height)
-{
-    *height = 0;
-    *width = ft_strlen(map[0]);  // Get width from the first row
-
-    while (map[*height] != NULL)  // Count the height (rows)
-    {
-        (*height)++;
-    }
 }
 
 int find_player_x(char **map)

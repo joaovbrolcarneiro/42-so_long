@@ -6,7 +6,7 @@
 /*   By: jbrol-ca <jbrol-ca@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/02 16:57:56 by jbrol-ca          #+#    #+#             */
-/*   Updated: 2025/01/05 17:50:56 by jbrol-ca         ###   ########.fr       */
+/*   Updated: 2025/01/06 23:46:26 by jbrol-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,11 +133,33 @@ void render_game(t_game *game, char **map)
  * Cleans up the game window and MLX resources.
  *********************************************************************/
 
-void	cleanup_game(t_game *game)
+void cleanup_game(t_game *game)
 {
-	if (game->win)
-		mlx_destroy_window(game->mlx, game->win);  // Close the window
+    // Free the window if it exists
+    if (game->win)
+        mlx_destroy_window(game->mlx, game->win);
+
+    // Free images (textures) if they exist
+    if (game->floor_img)
+        mlx_destroy_image(game->mlx, game->floor_img);
+    if (game->wall_img)
+        mlx_destroy_image(game->mlx, game->wall_img);
+    if (game->player_img)
+        mlx_destroy_image(game->mlx, game->player_img);
+    if (game->collectible_img)
+        mlx_destroy_image(game->mlx, game->collectible_img);
+    if (game->exit_img)
+        mlx_destroy_image(game->mlx, game->exit_img);
+
+    // Free the map array if it was dynamically allocated (assuming it's allocated dynamically in main)
+    if (game->map)
+    {
+        for (int i = 0; game->map[i] != NULL; i++)
+            free(game->map[i]);
+        free(game->map);
+    }
 }
+
 void update_map_position(char **map, int player_x, int player_y)
 {
     for (int y = 0; y < ft_strarr_len(map); y++) {
