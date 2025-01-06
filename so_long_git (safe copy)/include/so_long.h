@@ -57,8 +57,12 @@ typedef struct s_validation {
  *                         Function Prototypes
  *********************************************************************/
 
-
-int	validate_boundaries(char **map);
+int	count_player_and_exit(char **map, int *player_count, int *exit_count);
+int	check_row_length(char **map, size_t row_length);
+int	check_top_boundary(char **map);
+int	check_bottom_boundary(char **map, size_t row_length);
+int	check_side_boundaries(char **map, size_t row_length);
+int	check_player_and_exit(char **map);
 int validate_map_structure(char **map);
 int check_map_validity(t_validation *validation);
 void	init_st(t_map_state *state, char **map);

@@ -6,7 +6,7 @@
 /*   By: jbrol-ca <jbrol-ca@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/30 19:59:02 by jbrol-ca          #+#    #+#             */
-/*   Updated: 2025/01/06 22:28:15 by jbrol-ca         ###   ########.fr       */
+/*   Updated: 2025/01/06 22:56:02 by jbrol-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,23 +41,27 @@ int	main(int argc, char **argv)
 	return (0);
 }
 
-
-
-int check_map_validity(t_validation *validation)
+int	check_map_validity(t_validation *validation)
 {
-    if (!validate_map(validation->map, validation->game->player_x, validation->game->player_y, validation->state, validation->visited))
-        return (print_error_and_return(validation->visited, validation->state->map_height));
-    if (validation->state->collectibles == 0 || validation->state->exit_found == 0)
-        return (print_error_and_return(validation->visited, validation->state->map_height));
-    return (1);
+	if (!validate_map(validation->map, validation->game->player_x,
+			validation->game->player_y, validation->state,
+			validation->visited))
+		return (print_error_and_return(validation->visited,
+				validation->state->map_height));
+	if (validation->state->collectibles == 0)
+		return (print_error_and_return(validation->visited,
+				validation->state->map_height));
+	if (validation->state->exit_found == 0)
+		return (print_error_and_return(validation->visited,
+				validation->state->map_height));
+	return (1);
 }
 
 void	init_st(t_map_state *state, char **map)
 {
-    state->collectibles = count_collectibles(map, state);
-    state->exit_found = 0;
+	state->collectibles = count_collectibles(map, state);
+	state->exit_found = 0;
 }
-
 
 int	print_error_and_return(char **visited, int map_height)
 {
@@ -169,18 +173,16 @@ char	**load_map_from_file(const char *filename)
 	return (map);
 }
 
-int	validate_row_lengths(char **map)
+int	check_row_length(char **map, size_t row_length)
 {
-	int		i;
-	size_t	row_length;
+	int	i;
 
-	row_length = ft_strlen(map[0]);
 	i = 1;
 	while (map[i] != NULL)
 	{
 		if (ft_strlen(map[i]) != row_length)
 		{
-			ft_printf("Error: Inconsistent row lengths.\n");
+			ft_printf("Error!\n");
 			return (0);
 		}
 		i++;
@@ -188,12 +190,44 @@ int	validate_row_lengths(char **map)
 	return (1);
 }
 
-int	validate_boundaries(char **map)
+int	check_top_boundary(char **map)
 {
-	int		i;
-	size_t	row_length;
+	int	i;
 
-	row_length = ft_strlen(map[0]);
+	i = 0;
+	while (map[0][i] != '\0')
+	{
+		if (map[0][i] != '1')
+		{
+			ft_printf("Error!\n");
+			return (0);
+		}
+		i++;
+	}
+	return (1);
+}
+
+int	check_bottom_boundary(char **map, size_t row_length)
+{
+	int	i;
+
+	i = 0;
+	while (map[i] != NULL)
+	{
+		if (map[i][row_length - 1] != '1')
+		{
+			ft_printf("Error!\n");
+			return (0);
+		}
+		i++;
+	}
+	return (1);
+}
+
+int	check_side_boundaries(char **map, size_t row_length)
+{
+	int	i;
+
 	i = 0;
 	while (map[i] != NULL)
 	{
@@ -202,120 +236,105 @@ int	validate_boundaries(char **map)
 			ft_printf("Error!\n");
 			return (0);
 		}
-		if (i == 0 && map[i][i] != '1')
+		i++;
+	}
+	return (1);
+}
+
+int	count_player_and_exit(char **map, int *player_count, int *exit_count)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	while (map[i] != NULL)
+	{
+		j = 0;
+		while (map[i][j] != '\0')
 		{
-			ft_printf("Error!\n");
-			return (0);
+			if (map[i][j] == 'P')
+				(*player_count)++;
+			if (map[i][j] == 'E')
+				(*exit_count)++;
+			j++;
 		}
 		i++;
 	}
 	return (1);
 }
 
-int validate_map_structure(char **map)
+int	check_player_and_exit(char **map)
 {
-    int i;
-    int j;
-    size_t row_length;
+	int	player_count;
+	int	exit_count;
 
-    row_length = ft_strlen(map[0]);
-
-    for (i = 1; map[i] != NULL; i++)
-    {
-        if (ft_strlen(map[i]) != row_length)
-        {
-            ft_printf("Error: Inconsistent row lengths.\n");
-            return (0);
-        }
-    }
-
-    for (i = 0; map[0][i] != '\0'; i++)
-    {
-        if (map[0][i] != '1')
-        {
-            ft_printf("Error: Top boundary is not properly walled.\n");
-            return (0);
-        }
-    }
-
-    for (i = 0; map[i] != NULL; i++)
-    {
-        if (map[i][row_length - 1] != '1')
-        {
-            ft_printf("Error: Bottom boundary is not properly walled.\n");
-            return (0);
-        }
-    }
-
-    for (i = 0; map[i] != NULL; i++)
-    {
-        if (map[i][0] != '1' || map[i][row_length - 1] != '1')
-        {
-            ft_printf("Error: Side boundaries are not properly walled.\n");
-            return (0);
-        }
-    }
-
-    int player_count = 0;
-    int exit_count = 0;
-
-    for (i = 0; map[i] != NULL; i++)
-    {
-        for (j = 0; map[i][j] != '\0'; j++)
-        {
-            if (map[i][j] == 'P')
-                player_count++;
-            if (map[i][j] == 'E')
-                exit_count++;
-        }
-    }
-
-    if (player_count != 1 || exit_count != 1)
-    {
-        ft_printf("Error: There should be exactly one player (P) and one exit (E).\n");
-        return (0);
-    }
-
-    return (1);
+	player_count = 0;
+	exit_count = 0;
+	if (!count_player_and_exit(map, &player_count, &exit_count))
+		return (0);
+	if (player_count != 1)
+	{
+		ft_printf("Error!\n");
+		return (0);
+	}
+	if (exit_count != 1)
+	{
+		ft_printf("Error!\n");
+		return (0);
+	}
+	return (1);
 }
 
-char **append_line_to_map(char **map, char *line)
+int	validate_map_structure(char **map)
 {
-    char **new_map;
-    int i;
+	size_t	row_length;
 
-    if (!line)
-        return (map);
-
-    i = 0;
-    while (map && map[i])
-        i++;
-
-    new_map = (char **)malloc(sizeof(char *) * (i + 2));
-    if (!new_map)
-        return (NULL);
-
-    i = 0;
-    while (map && map[i])
-    {
-        new_map[i] = map[i];
-        i++;
-    }
-    new_map[i] = line;
-    new_map[i + 1] = NULL;
-
-    free(map);
-    return (new_map);
+	row_length = ft_strlen(map[0]);
+	if (!check_row_length(map, row_length))
+		return (0);
+	if (!check_top_boundary(map))
+		return (0);
+	if (!check_bottom_boundary(map, row_length))
+		return (0);
+	if (!check_side_boundaries(map, row_length))
+		return (0);
+	if (!check_player_and_exit(map))
+		return (0);
+	return (1);
 }
 
-void strip_newline(char *line)
+char	**append_line_to_map(char **map, char *line)
 {
-    int len;
+	char	**new_map;
+	int		i;
 
-    if (!line)
-        return;
+	if (!line)
+		return (map);
+	i = 0;
+	while (map && map[i])
+		i++;
+	new_map = (char **)malloc(sizeof(char *) * (i + 2));
+	if (!new_map)
+		return (NULL);
+	i = 0;
+	while (map && map[i])
+	{
+		new_map[i] = map[i];
+		i++;
+	}
+	new_map[i] = line;
+	new_map[i + 1] = NULL;
+	free(map);
+	return (new_map);
+}
 
-    len = ft_strlen(line);
-    if (len > 0 && line[len - 1] == '\n')
-        line[len - 1] = '\0';
+void	strip_newline(char *line)
+{
+	int	len;
+
+	if (!line)
+		return ;
+	len = ft_strlen(line);
+	if (len > 0 && line[len - 1] == '\n')
+		line[len - 1] = '\0';
 }
