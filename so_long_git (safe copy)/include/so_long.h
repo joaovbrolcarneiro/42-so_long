@@ -50,7 +50,7 @@ typedef struct s_game
 
 int check_map_validity(char **map, int player_x, int player_y,
                         t_map_state *state, char **visited);
-void init_state(t_map_state *state, int map_width, int map_height, char **map);
+void	init_st(t_map_state *state, int map_width, int map_height, char **map);
 int print_error_and_return(char **visited, int map_height);
 int count_reachable_collectibles(char **map, int x, int y, t_map_state *state, char **visited);
 int are_all_collectibles_reachable(char **map, int player_x, int player_y, t_map_state *state);
@@ -58,7 +58,7 @@ int is_valid_character(char **map, int map_width, int map_height);
 void count_valid_move(t_game *game);
 int are_collectibles_collected(char **map);
 char    **parse_arguments_and_load_map(int argc, char **argv);
-int validate_map_structure_and_player_position(char **map, int *player_x, int *player_y);
+int	validate_map_struct_and_plyr_pos(char **map, int *player_x, int *player_y);
 char    **initialize_visited_map(int map_width, int map_height);
 void    clean_up_visited_map(char **visited, int map_height);
 void update_map_position(char **map, int player_x, int player_y);

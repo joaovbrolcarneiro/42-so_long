@@ -6,100 +6,92 @@
 /*   By: jbrol-ca <jbrol-ca@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/30 19:59:02 by jbrol-ca          #+#    #+#             */
-/*   Updated: 2025/01/06 18:51:24 by jbrol-ca         ###   ########.fr       */
+/*   Updated: 2025/01/06 20:28:16 by jbrol-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
 
 
-int main(int argc, char **argv)
+int	main(int argc, char **argv)
 {
-    char        **map;
-    t_map_state state;
-    int         map_width;
-    int         map_height;
-    int         player_x;
-    int         player_y;
-    char        **visited;
+	char	**map;
+	t_game	game;
+	char	**visited;
 
-    map = parse_arguments_and_load_map(argc, argv);
-    if (!map)
-        return (1);
-    map_width = ft_strlen(map[0]);
-    map_height = ft_strarr_len(map);
-    if (!validate_map_structure_and_player_position(map, &player_x, &player_y))
-        return (1);
-    init_state(&state, map_width, map_height, map);
-    visited = initialize_visited_map(map_width, map_height);
-    if (!visited)
-        return (1);
-    if (!check_map_validity(map, player_x, player_y, &state, visited))
-        return (1);
-    clean_up_visited_map(visited, map_height);
-    start_game(map);
-    return (0);
+	map = parse_arguments_and_load_map(argc, argv);
+	if (!map)
+		return (1);
+	game.map_state.map_width = ft_strlen(map[0]);
+	game.map_state.map_height = ft_strarr_len(map);
+	if (!validate_map_struct_and_plyr_pos(map, &game.player_x, &game.player_y))
+		return (1);
+	init_st(&game.map_state, game.map_state.map_width, \
+	game.map_state.map_height, map);
+	visited = initialize_visited_map (game.map_state.map_width, \
+	game.map_state.map_height);
+	if (!visited)
+		return (1);
+	if (!check_map_validity(map, game.player_x, game.player_y, \
+	&game.map_state, visited))
+		return (1);
+	clean_up_visited_map(visited, game.map_state.map_height);
+	start_game(map);
+	return (0);
 }
 
-int check_map_validity(char **map, int player_x, int player_y,
-                        t_map_state *state, char **visited)
+int	check_map_validity(char **map, int player_x, int player_y, t_map_state *state, char **visited)
 {
-    if (!validate_map(map, player_x, player_y, state, visited))
-        return (print_error_and_return(visited, state->map_height)); // Use state->map_height
-    if (state->collectibles == 0 || state->exit_found == 0)
-        return (print_error_and_return(visited, state->map_height)); // Use state->map_height
-    return (1);
+	if (!validate_map(map, player_x, player_y, state, visited))
+		return (print_error_and_return(visited, state->map_height));
+	if (state->collectibles == 0 || state->exit_found == 0)
+		return (print_error_and_return(visited, state->map_height));
+	return (1);
 }
 
-
-
-void init_state(t_map_state *state, int map_width, int map_height, char **map)
+void	init_st(t_map_state *state, int map_width, int map_height, char **map)
 {
-    state->map_width = map_width;
-    state->map_height = map_height;
-    state->collectibles = count_collectibles(map, state);
-    state->exit_found = 0; // Initialize exit_found here
+	state->map_width = map_width;
+	state->map_height = map_height;
+	state->collectibles = count_collectibles(map, state);
+	state->exit_found = 0;
 }
 
-
-int print_error_and_return(char **visited, int map_height)
+int	print_error_and_return(char **visited, int map_height)
 {
-    ft_printf("Error!\n");
-    clean_up_visited_map(visited, map_height);
-    return (1);
+	ft_printf("Error!\n");
+	clean_up_visited_map(visited, map_height);
+	return (1);
 }
 
-
-char **parse_arguments_and_load_map(int argc, char **argv)
+char	**parse_arguments_and_load_map(int argc, char **argv)
 {
-    if (argc != 2)
-    {
-        ft_printf("Usage: ./so_long <map_file>\n");
-        return (NULL);
-    }
+	char	**map;
 
-    char **map = load_map_from_file(argv[1]);
-    if (!map)
-    {
-        ft_printf("Error: Failed to load map.\n");
-        return (NULL);
-    }
-    return (map);
+	if (argc != 2)
+	{
+		ft_printf("Usage: ./so_long <map_file>\n");
+		return (NULL);
+	}
+	map = load_map_from_file(argv[1]);
+	if (!map)
+	{
+		ft_printf("Error: Failed to load map.\n");
+		return (NULL);
+	}
+	return (map);
 }
 
-int validate_map_structure_and_player_position(char **map, int *player_x, int *player_y)
+int	validate_map_struct_and_plyr_pos(char **map, int *player_x, int *player_y)
 {
-
-    if (!map || !validate_map_structure(map))
-    {
-        ft_printf("Error: Invalid map structure\n");
-        return (0);
-    }
-
-    *player_x = find_player_x(map);
-    *player_y = find_player_y(map);
-
-    return (1);
+	if (!map || !(map))
+	{
+		ft_printf("Error: Invalid map structure\n");
+		return (0);
+	}
+	*player_x = find_player_x(map);
+	*player_y = find_player_y(map);
+	return (1);
 }
 
 char **initialize_visited_map(int map_width, int map_height)
