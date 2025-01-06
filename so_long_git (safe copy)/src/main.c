@@ -6,7 +6,7 @@
 /*   By: jbrol-ca <jbrol-ca@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/30 19:59:02 by jbrol-ca          #+#    #+#             */
-/*   Updated: 2025/01/06 22:16:13 by jbrol-ca         ###   ########.fr       */
+/*   Updated: 2025/01/06 22:28:15 by jbrol-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,9 @@ int	main(int argc, char **argv)
 	game.map_state.map_height = ft_strarr_len(map);
 	if (!validate_map_struct_and_plyr_pos(map, &game.player_x, &game.player_y))
 		return (1);
-	init_st(&game.map_state, game.map_state.map_width, game.map_state.map_height, map);
-	if (!(visited = i_vm(game.map_state.map_width, game.map_state.map_height)))
+	init_st(&game.map_state, map);
+	visited = i_vm(game.map_state.map_width, game.map_state.map_height);
+	if (!visited)
 		return (1);
 	validation.game = &game;
 	validation.map = map;
@@ -41,6 +42,7 @@ int	main(int argc, char **argv)
 }
 
 
+
 int check_map_validity(t_validation *validation)
 {
     if (!validate_map(validation->map, validation->game->player_x, validation->game->player_y, validation->state, validation->visited))
@@ -50,13 +52,12 @@ int check_map_validity(t_validation *validation)
     return (1);
 }
 
-void	init_st(t_map_state *state, int map_width, int map_height, char **map)
+void	init_st(t_map_state *state, char **map)
 {
-	state->map_width = map_width;
-	state->map_height = map_height;
-	state->collectibles = count_collectibles(map, state);
-	state->exit_found = 0;
+    state->collectibles = count_collectibles(map, state);
+    state->exit_found = 0;
 }
+
 
 int	print_error_and_return(char **visited, int map_height)
 {

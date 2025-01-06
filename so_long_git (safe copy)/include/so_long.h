@@ -61,7 +61,7 @@ typedef struct s_validation {
 int	validate_boundaries(char **map);
 int validate_map_structure(char **map);
 int check_map_validity(t_validation *validation);
-void	init_st(t_map_state *state, int map_width, int map_height, char **map);
+void	init_st(t_map_state *state, char **map);
 int print_error_and_return(char **visited, int map_height);
 int count_reachable_collectibles(char **map, int x, int y, t_map_state *state, char **visited);
 int are_all_collectibles_reachable(char **map, int player_x, int player_y, t_map_state *state);
