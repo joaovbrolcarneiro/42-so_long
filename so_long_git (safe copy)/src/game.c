@@ -6,7 +6,7 @@
 /*   By: jbrol-ca <jbrol-ca@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/02 18:05:14 by jbrol-ca          #+#    #+#             */
-/*   Updated: 2025/01/07 00:58:48 by jbrol-ca         ###   ########.fr       */
+/*   Updated: 2025/01/07 01:26:35 by jbrol-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,8 +104,7 @@ int handle_key_press(int keycode, t_game *game)
         // If all collectibles are collected, allow the player to "collect" the exit and end the game
         if (all_collectibles_collected)
         {
-            mlx_destroy_window(game->mlx, game->win);
-            game->win = NULL;
+            cleanup_game(game);
             exit(0);  // Exit the game
         }
         else

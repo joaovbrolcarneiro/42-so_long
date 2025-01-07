@@ -99,7 +99,7 @@ int		handle_key_press(int key, t_game *game);
 void init_hooks(t_game *game);
 // Function to handle the window close event (clicking the 'X' button)
 int handle_window_close(t_game *game);
-
+void	strip_newline(char *line);
 // Function to handle the window resize event (optional, if you want to track window resizing)
 int handle_resize(int width, int height);
 // Function to initialize the window and maximize it to the screen size (if you want)
