@@ -6,7 +6,7 @@
 /*   By: jbrol-ca <jbrol-ca@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/30 19:59:02 by jbrol-ca          #+#    #+#             */
-/*   Updated: 2025/01/06 23:15:01 by jbrol-ca         ###   ########.fr       */
+/*   Updated: 2025/01/07 00:16:52 by jbrol-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ int	main(int argc, char **argv)
 	validation.visited = visited;
 	if (!check_map_validity(&validation))
 		return (1);
-	clean_up_visited_map(visited, game.map_state.map_height);
+	//clean_up_visited_map(visited, game.map_state.map_height);
 	start_game(map);
 	return (0);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   map.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jbrol-ca <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: jbrol-ca <jbrol-ca@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 23:17:08 by jbrol-ca          #+#    #+#             */
-/*   Updated: 2025/01/06 23:17:11 by jbrol-ca         ###   ########.fr       */
+/*   Updated: 2025/01/07 00:01:14 by jbrol-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,6 @@ char	**load_map_from_file(const char *filename)
 	line = get_next_line(fd);
 	while (line != NULL)
 	{
-		strip_newline(line);
 		map[i++] = line;
 		line = get_next_line(fd);
 	}

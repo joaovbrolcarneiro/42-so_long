@@ -6,7 +6,7 @@
 #    By: jbrol-ca <jbrol-ca@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/12/19 22:09:17 by jbrol-ca          #+#    #+#              #
-#    Updated: 2025/01/03 14:57:04 by jbrol-ca         ###   ########.fr        #
+#    Updated: 2025/01/07 00:20:29 by jbrol-ca         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,7 @@ OBJ_DIR             = ./obj
 
 # Compiler and Flags
 CC                  = cc
-CFLAGS              = -Wall -Wextra -fPIC -I$(INC_DIR)
+CFLAGS              = -Wall -Wextra -fPIC -g -I$(INC_DIR)
 RM                  = rm -f
 
 # Source Files

@@ -6,7 +6,7 @@
 /*   By: jbrol-ca <jbrol-ca@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/02 16:57:56 by jbrol-ca          #+#    #+#             */
-/*   Updated: 2025/01/06 23:46:26 by jbrol-ca         ###   ########.fr       */
+/*   Updated: 2025/01/07 01:05:47 by jbrol-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,6 @@ int init_window(t_game *game, char **map)
     {
         ft_printf("Error: Window creation failed\n");
         mlx_destroy_display(game->mlx);
-        free(game->mlx);
         return (0);
     }
 
@@ -135,9 +134,7 @@ void render_game(t_game *game, char **map)
 
 void cleanup_game(t_game *game)
 {
-    // Free the window if it exists
-    if (game->win)
-        mlx_destroy_window(game->mlx, game->win);
+    ft_printf("Cleaning\n");
 
     // Free images (textures) if they exist
     if (game->floor_img)
@@ -151,12 +148,25 @@ void cleanup_game(t_game *game)
     if (game->exit_img)
         mlx_destroy_image(game->mlx, game->exit_img);
 
-    // Free the map array if it was dynamically allocated (assuming it's allocated dynamically in main)
+    // Free the window
+    if (game->win)
+        mlx_destroy_window(game->mlx, game->win);
+
+    // Free the map array
     if (game->map)
     {
         for (int i = 0; game->map[i] != NULL; i++)
             free(game->map[i]);
         free(game->map);
+        game->map = NULL;
+    }
+
+    // Clean up MinilibX
+    if (game->mlx)
+    {
+        mlx_destroy_display(game->mlx); // Destroy display connection
+        free(game->mlx);               // Free MinilibX context
+        game->mlx = NULL;
     }
 }
 

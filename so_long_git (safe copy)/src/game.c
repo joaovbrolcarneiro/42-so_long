@@ -6,7 +6,7 @@
 /*   By: jbrol-ca <jbrol-ca@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/02 18:05:14 by jbrol-ca          #+#    #+#             */
-/*   Updated: 2025/01/06 23:48:06 by jbrol-ca         ###   ########.fr       */
+/*   Updated: 2025/01/07 00:58:48 by jbrol-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,8 +68,7 @@ int handle_key_press(int keycode, t_game *game)
     // ESC key: Exit the game
     if (keycode == KEY_ESC)
     {
-        mlx_destroy_window(game->mlx, game->win);
-        game->win = NULL;
+        cleanup_game(game);
         exit(0);
     }
 
@@ -171,20 +170,6 @@ void count_valid_move(t_game *game)
 
 
 
-
-
-
-
-
-
-
-
-/* *********************************************************************
- * This function sets up the key hooks using mlx_key_hook.
- *********************************************************************/
-
-#include <mlx.h>
-
 // Function to handle the key press and window close event
 int handle_window_close(t_game *game)
 {
@@ -192,7 +177,7 @@ int handle_window_close(t_game *game)
 
     // Cleanup the game and exit
     mlx_destroy_window(game->mlx, game->win);
-    game->win = NULL;
+    cleanup_game (game);
     exit(0);  // Exit the program cleanly
     return (0);
 }

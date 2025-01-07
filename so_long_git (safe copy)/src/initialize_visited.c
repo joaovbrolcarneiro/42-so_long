@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   initialize_visited.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jbrol-ca <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: jbrol-ca <jbrol-ca@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 23:16:48 by jbrol-ca          #+#    #+#             */
-/*   Updated: 2025/01/06 23:16:53 by jbrol-ca         ###   ########.fr       */
+/*   Updated: 2025/01/07 00:14:39 by jbrol-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,15 +41,22 @@ char	**i_vm(int map_width, int map_height)
 	return (visited);
 }
 
-void	clean_up_visited_map(char **visited, int map_height)
+void clean_up_visited_map(char **visited, int map_height)
 {
-	int	i;
+    int i;
 
-	i = 0;
-	while (i < map_height)
-	{
-		free(visited[i]);
-		i++;
-	}
-	free(visited);
+    if (visited == NULL)
+        return ;
+    i = 0;
+    while (i < map_height)
+    {
+        if (visited[i] != NULL)
+        {
+            free(visited[i]);
+            visited[i] = NULL;  // Prevent further access
+        }
+        i++;
+    }
+    free(visited);
+    visited = NULL;  // Set the pointer itself to NULL after freeing
 }
