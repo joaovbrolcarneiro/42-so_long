@@ -6,7 +6,7 @@
 /*   By: jbrol-ca <jbrol-ca@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 23:16:48 by jbrol-ca          #+#    #+#             */
-/*   Updated: 2025/01/07 01:37:08 by jbrol-ca         ###   ########.fr       */
+/*   Updated: 2025/01/07 17:04:49 by jbrol-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,14 @@ char	**i_vm(int map_width, int map_height)
 	{
 		visited[i] = (char *)malloc(sizeof(char) * map_width);
 		if (!visited[i])
-			return (free(visited), ft_printf("Error!\n"), NULL);
+		{
+			// Free already allocated rows and return NULL
+			while (--i >= 0)
+				free(visited[i]);
+			free(visited);
+			ft_printf("Error: Failed to allocate visited row\n");
+			return (NULL);
+		}
 		j = 0;
 		while (j < map_width)
 			visited[i][j++] = 0;

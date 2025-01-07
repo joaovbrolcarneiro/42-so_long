@@ -6,7 +6,7 @@
 /*   By: jbrol-ca <jbrol-ca@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/02 16:57:56 by jbrol-ca          #+#    #+#             */
-/*   Updated: 2025/01/07 01:05:47 by jbrol-ca         ###   ########.fr       */
+/*   Updated: 2025/01/07 18:16:06 by jbrol-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,8 +134,6 @@ void render_game(t_game *game, char **map)
 
 void cleanup_game(t_game *game)
 {
-    ft_printf("Cleaning\n");
-
     // Free images (textures) if they exist
     if (game->floor_img)
         mlx_destroy_image(game->mlx, game->floor_img);

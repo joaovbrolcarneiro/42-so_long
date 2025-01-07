@@ -104,6 +104,8 @@ void	strip_newline(char *line);
 int handle_resize(int width, int height);
 // Function to initialize the window and maximize it to the screen size (if you want)
 int init_window(t_game *game, char **map);
+void	terminate_program(char **visited, char **map, int map_height, const char *error_message);
+void	free_map(char **map, int map_height);
 
 #endif /* SO_LONG_H */
 
