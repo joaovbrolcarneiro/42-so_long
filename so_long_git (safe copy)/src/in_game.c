@@ -35,44 +35,7 @@ void	update_adjacent_cell(int keycode, int *new_x, int *new_y, t_game *game)
     }
 }
 
-int	handle_collectible_move(t_game *game, int new_x, int new_y)
-{
-    if (game->map[new_y][new_x] == 'C')
-    {
-        game->map[new_y][new_x] = '0';
-        count_valid_move(game);  // Increment valid movements counter
-    }
-    return (1);
-}
 
-int	handle_key_press(int keycode, t_game *game)
-{
-    int new_player_x = game->player_x;
-    int new_player_y = game->player_y;
-
-    if (!handle_esc_key(keycode, game))
-        return (0);
-
-    if (!update_player_position(keycode, game, &new_player_x, &new_player_y))
-        return (0);
-
-    if (!is_valid_move(game, new_player_x, new_player_y))
-        return (0);
-
-    if (!check_exit_move(game, keycode, &new_player_x, &new_player_y))
-        return (0);
-
-    if (!handle_collectible_move(game, new_player_x, new_player_y))
-        return (0);
-
-    game->player_x = new_player_x;
-    game->player_y = new_player_y;
-
-    update_map_position(game->map, game->player_x, game->player_y);
-    render_game(game, game->map);
-
-    return (0);
-}
 
 
 // Function to increment valid movements counter
