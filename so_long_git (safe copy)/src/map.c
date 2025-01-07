@@ -6,7 +6,7 @@
 /*   By: jbrol-ca <jbrol-ca@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 23:17:08 by jbrol-ca          #+#    #+#             */
-/*   Updated: 2025/01/07 01:25:18 by jbrol-ca         ###   ########.fr       */
+/*   Updated: 2025/01/07 01:42:04 by jbrol-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,13 +24,12 @@ char	**load_map_from_file(const char *filename)
 		return (ft_printf("Error: Failed to open file %s\n", filename), NULL);
 	map = malloc(sizeof(char *) * MAX_MAP_ROWS);
 	if (!map)
-		return (ft_printf("Error: Memory allocation failed for map.\n"),
-			close(fd), NULL);
+		return (ft_printf("Error: Map memory allocation \n"), close(fd), NULL);
 	i = 0;
 	line = get_next_line(fd);
-	while (line != NULL)
+	while (line)
 	{
-        strip_newline(line);
+		strip_newline(line);
 		map[i++] = line;
 		line = get_next_line(fd);
 	}
@@ -39,17 +38,6 @@ char	**load_map_from_file(const char *filename)
 	map[i] = NULL;
 	close(fd);
 	return (map);
-}
-
-void	strip_newline(char *line)
-{
-	int	len;
-
-	if (!line)
-		return ;
-	len = ft_strlen(line);
-	if (len > 0 && line[len - 1] == '\n')
-		line[len - 1] = '\0';       
 }
 
 char	**handle_empty_file(char **map, int fd)
