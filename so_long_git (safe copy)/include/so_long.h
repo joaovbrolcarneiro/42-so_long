@@ -55,6 +55,8 @@ typedef struct s_validation {
  *                         Function Prototypes
  *********************************************************************/
 
+void	update_player_pos(char **map, int player_x, int player_y);
+void	print_updated_map(char **map);
 void	free_map_from_game(t_game *game);
 void	free_images(t_game *game);
 void	free_window_and_mlx(t_game *game);
