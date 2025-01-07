@@ -55,6 +55,11 @@ typedef struct s_validation {
  *                         Function Prototypes
  *********************************************************************/
 
+void	free_map_from_game(t_game *game);
+void	free_images(t_game *game);
+void	free_window_and_mlx(t_game *game);
+void	render_tile(t_game *game, char tile, int x, int y);
+void	render_map_row(t_game *game, char *row, int y);
 int	load_textures(t_game *game, char *path, void **img);
 int	init_textures(t_game *game);
 int	init_window(t_game *game, char **map);
@@ -103,7 +108,7 @@ int     ft_printf(const char *format, ...);
 int     start_game(char **map);   // Game-related function prototypes
 int     init_window(t_game *game, char **map);
 void    render_game(t_game *game, char **map);
-void    cleanup_game(t_game *game);
+void	cleanup_game(t_game *game);
 int     find_player_x(char **map);
 int     find_player_y(char **map);
 int	handle_key_press(int keycode, t_game *game);

@@ -6,7 +6,7 @@
 /*   By: jbrol-ca <jbrol-ca@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/02 16:57:56 by jbrol-ca          #+#    #+#             */
-/*   Updated: 2025/01/07 21:53:55 by jbrol-ca         ###   ########.fr       */
+/*   Updated: 2025/01/07 22:07:05 by jbrol-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,86 +75,107 @@ int	init_window(t_game *game, char **map)
 	return (1);
 }
 
-void render_game(t_game *game, char **map)
+void	render_tile(t_game *game, char tile, int x, int y)
 {
-    int x, y;
-
-    y = 0;
-    while (y < ft_strarr_len(map))
-    {
-        x = 0;
-        while (x < (int)ft_strlen(map[y]))
-        {
-
-            // Render floor tiles (0)
-            if (map[y][x] == '0')
-                mlx_put_image_to_window(game->mlx, game->win, game->floor_img, x * TILE_SIZE, y * TILE_SIZE);
-         
-            // Render walls (1)
-            if (map[y][x] == '1')
-                mlx_put_image_to_window(game->mlx, game->win, game->wall_img, x * TILE_SIZE, y * TILE_SIZE);
-
-            // Render player (P)
-            if (map[y][x] == 'P')
-            {
-                ft_printf("Rendering player at: (%d, %d)\n", x, y);  // Debug print
-                mlx_put_image_to_window(game->mlx, game->win, game->player_img, x * TILE_SIZE, y * TILE_SIZE);
-            }
-
-            // Render collectibles (C)
-            if (map[y][x] == 'C')
-                mlx_put_image_to_window(game->mlx, game->win, game->collectible_img, x * TILE_SIZE, y * TILE_SIZE);
-
-            // Render exit (E)
-            if (map[y][x] == 'E')
-                mlx_put_image_to_window(game->mlx, game->win, game->exit_img, x * TILE_SIZE, y * TILE_SIZE);
-
-            x++;
-        }
-        y++;
-    }
+	if (tile == '0')
+		mlx_put_image_to_window(game->mlx, game->win,
+			game->floor_img, x * TILE_SIZE, y * TILE_SIZE);
+	else if (tile == '1')
+		mlx_put_image_to_window(game->mlx, game->win,
+			game->wall_img, x * TILE_SIZE, y * TILE_SIZE);
+	else if (tile == 'P')
+	{
+		ft_printf("Rendering player at: (%d, %d)\n", x, y);
+		mlx_put_image_to_window(game->mlx, game->win,
+			game->player_img, x * TILE_SIZE, y * TILE_SIZE);
+	}
+	else if (tile == 'C')
+		mlx_put_image_to_window(game->mlx, game->win,
+			game->collectible_img, x * TILE_SIZE, y * TILE_SIZE);
+	else if (tile == 'E')
+		mlx_put_image_to_window(game->mlx, game->win,
+			game->exit_img, x * TILE_SIZE, y * TILE_SIZE);
 }
 
-
-
-/* *********************************************************************
- * Cleans up the game window and MLX resources.
- *********************************************************************/
-
-void cleanup_game(t_game *game)
+void	render_map_row(t_game *game, char *row, int y)
 {
-    // Free images (textures) if they exist
-    if (game->floor_img)
-        mlx_destroy_image(game->mlx, game->floor_img);
-    if (game->wall_img)
-        mlx_destroy_image(game->mlx, game->wall_img);
-    if (game->player_img)
-        mlx_destroy_image(game->mlx, game->player_img);
-    if (game->collectible_img)
-        mlx_destroy_image(game->mlx, game->collectible_img);
-    if (game->exit_img)
-        mlx_destroy_image(game->mlx, game->exit_img);
+	int	x;
 
-    // Free the window
-    if (game->win)
-        mlx_destroy_window(game->mlx, game->win);
+	x = 0;
+	while (x < (int)ft_strlen(row))
+	{
+		render_tile(game, row[x], x, y);
+		x++;
+	}
+}
 
-    // Free the map array
-    if (game->map)
-    {
-        for (int i = 0; game->map[i] != NULL; i++)
-            free(game->map[i]);
-        free(game->map);
-        game->map = NULL;
-    }
+void	render_game(t_game *game, char **map)
+{
+	int	y;
 
-    // Clean up MinilibX
-    if (game->mlx)
-    {
-        mlx_destroy_display(game->mlx); // Destroy display connection
-        free(game->mlx);               // Free MinilibX context
-        game->mlx = NULL;
-    }
+	y = 0;
+	while (y < ft_strarr_len(map))
+	{
+		render_map_row(game, map[y], y);
+		y++;
+	}
+}
+
+void	free_images(t_game *game)
+{
+	if (game->floor_img)
+		mlx_destroy_image(game->mlx, game->floor_img);
+	if (game->wall_img)
+		mlx_destroy_image(game->mlx, game->wall_img);
+	if (game->player_img)
+		mlx_destroy_image(game->mlx, game->player_img);
+	if (game->collectible_img)
+		mlx_destroy_image(game->mlx, game->collectible_img);
+	if (game->exit_img)
+		mlx_destroy_image(game->mlx, game->exit_img);
+}
+
+void	free_window_and_mlx(t_game *game)
+{
+	if (game->win)
+		mlx_destroy_window(game->mlx, game->win);
+	if (game->mlx)
+	{
+		mlx_destroy_display(game->mlx);
+		free(game->mlx);
+		game->mlx = NULL;
+	}
+}
+
+void	free_map_from_game(t_game *game)
+{
+	int	map_height;
+	int	i;
+
+	if (!game->map)
+		return;
+	map_height = 0;
+	while (game->map[map_height] != NULL)
+		map_height++;
+	i = 0;
+	while (i < map_height)
+	{
+		if (game->map[i])
+		{
+			free(game->map[i]);
+			game->map[i] = NULL;
+		}
+		i++;
+	}
+	free(game->map);
+	game->map = NULL;
+}
+
+void	cleanup_game(t_game *game)
+{
+	free_images(game);
+	free_map_from_game(game);
+	free_window_and_mlx(game);
 }
 
 void update_map_position(char **map, int player_x, int player_y)

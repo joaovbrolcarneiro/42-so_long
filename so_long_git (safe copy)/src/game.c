@@ -6,7 +6,7 @@
 /*   By: jbrol-ca <jbrol-ca@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/02 18:05:14 by jbrol-ca          #+#    #+#             */
-/*   Updated: 2025/01/07 21:23:55 by jbrol-ca         ###   ########.fr       */
+/*   Updated: 2025/01/07 22:08:15 by jbrol-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@ int	start_game(char **map)
 
 	game.player_x = find_player_x(map);
 	game.player_y = find_player_y(map);
-	ft_printf("Player position initialized");
 	game.map = map;
 	game.valid_movements = 0;
 	if (!init_window(&game, map))
