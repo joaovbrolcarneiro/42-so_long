@@ -6,7 +6,7 @@
 /*   By: jbrol-ca <jbrol-ca@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/30 19:59:02 by jbrol-ca          #+#    #+#             */
-/*   Updated: 2025/01/07 17:51:56 by jbrol-ca         ###   ########.fr       */
+/*   Updated: 2025/01/07 18:37:53 by jbrol-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,46 +89,46 @@ void	terminate_program(char **visited, char **map, int map_height, const char *e
 }
 
 
-int	check_map_validity(t_validation *validation)
+int check_map_validity(t_validation *validation)
 {
-	ft_printf("Debug: Validating map...\n");
+    ft_printf("Debug: Validating map...\n");
 
-	if (!validate_map(validation->map, validation->game->player_x,
-			validation->game->player_y, validation->state,
-			validation->visited))
-	{
-		ft_printf("Debug: Map failed main validation\n");
-		return (0);
-	}
+    // Call validate_map with the validation struct
+    if (!validate_map(validation->map, validation->game->player_x,
+            validation->game->player_y, validation))
+    {
+        ft_printf("Debug: Map failed main validation\n");
+        return (0);
+    }
 
-	if (validation->state->collectibles == 0)
-	{
-		ft_printf("Debug: No collectibles found\n");
-		return (0);
-	}
+    if (validation->state->collectibles == 0)
+    {
+        ft_printf("Debug: No collectibles found\n");
+        return (0);
+    }
 
-	if (validation->state->exit_found == 0)
-	{
-		ft_printf("Debug: No exit found\n");
-		return (0);
-	}
+    if (validation->state->exit_found == 0)
+    {
+        ft_printf("Debug: No exit found\n");
+        return (0);
+    }
 
-	// Ensure only one exit exists
-	int exit_count = 0;
-	for (int y = 0; y < validation->state->map_height; y++) {
-		for (int x = 0; x < validation->state->map_width; x++) {
-			if (validation->map[y][x] == 'E') {
-				exit_count++;
-			}
-		}
-	}
-	if (exit_count != 1) {
-		ft_printf("Error: Multiple exits detected\n");
-		return (0);
-	}
+    // Ensure only one exit exists
+    int exit_count = 0;
+    for (int y = 0; y < validation->state->map_height; y++) {
+        for (int x = 0; x < validation->state->map_width; x++) {
+            if (validation->map[y][x] == 'E') {
+                exit_count++;
+            }
+        }
+    }
+    if (exit_count != 1) {
+        ft_printf("Error: Multiple exits detected\n");
+        return (0);
+    }
 
-	ft_printf("Debug: Map validated successfully\n");
-	return (1);
+    ft_printf("Debug: Map validated successfully\n");
+    return (1);
 }
 
 

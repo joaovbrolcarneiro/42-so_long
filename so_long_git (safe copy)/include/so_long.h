@@ -51,8 +51,6 @@ typedef struct s_validation {
     char **visited;
 } t_validation;
 
-
-
 /* *********************************************************************
  *                         Function Prototypes
  *********************************************************************/
@@ -85,7 +83,8 @@ void    move_player(t_game *game, int new_x, int new_y);
 void    check_for_collisions(t_game *game, int player_x, int player_y);
 int     main(int argc, char **argv);
 char    **load_map_from_file(const char *filename);
-int     validate_map(char **map, int x, int y, t_map_state *state, char **visited);
+int validate_map(char **map, int x, int y, t_validation *validation);
+int check_map_validity(t_validation *validation);
 int     validate_map_structure(char **map);
 int     ft_error(const char *message);
 int     is_wall(const char *line);

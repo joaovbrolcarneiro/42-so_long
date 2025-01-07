@@ -6,14 +6,13 @@
 /*   By: jbrol-ca <jbrol-ca@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/30 19:57:11 by jbrol-ca          #+#    #+#             */
-/*   Updated: 2025/01/07 17:50:23 by jbrol-ca         ###   ########.fr       */
+/*   Updated: 2025/01/07 18:38:23 by jbrol-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
 
 #include "so_long.h"
-
 
 int	count_collectibles(char **map, t_map_state *state)
 {
@@ -39,8 +38,11 @@ int	count_collectibles(char **map, t_map_state *state)
 }
 
 // Function to validate the map
-int validate_map(char **map, int x, int y, t_map_state *state, char **visited)
+int validate_map(char **map, int x, int y, t_validation *validation)
 {
+    t_map_state *state = validation->state;
+    char **visited = validation->visited;
+
     // Check if the map contains invalid characters
     if (!is_valid_character(map, state->map_width, state->map_height)) {
         ft_printf("Error: Map contains invalid characters\n");
@@ -65,7 +67,7 @@ int validate_map(char **map, int x, int y, t_map_state *state, char **visited)
     // Recursive calls to check adjacent cells (right, left, down, up)
     int directions[4][2] = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
     for (int i = 0; i < 4; i++) {
-        validate_map(map, x + directions[i][0], y + directions[i][1], state, visited);
+        validate_map(map, x + directions[i][0], y + directions[i][1], validation);
     }
 
     // After marking visited cells, check if all collectibles are reachable
@@ -76,6 +78,7 @@ int validate_map(char **map, int x, int y, t_map_state *state, char **visited)
 
     return 1;
 }
+
 
 int are_all_collectibles_reachable(char **map, int player_x, int player_y, t_map_state *state)
 {
