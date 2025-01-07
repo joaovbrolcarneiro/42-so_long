@@ -6,7 +6,7 @@
 /*   By: jbrol-ca <jbrol-ca@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 23:16:48 by jbrol-ca          #+#    #+#             */
-/*   Updated: 2025/01/07 17:04:49 by jbrol-ca         ###   ########.fr       */
+/*   Updated: 2025/01/07 18:28:26 by jbrol-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,20 +32,21 @@ char	**i_vm(int map_width, int map_height)
 	{
 		visited[i] = (char *)malloc(sizeof(char) * map_width);
 		if (!visited[i])
-		{
-			// Free already allocated rows and return NULL
-			while (--i >= 0)
-				free(visited[i]);
-			free(visited);
-			ft_printf("Error: Failed to allocate visited row\n");
-			return (NULL);
-		}
+			return (clean_up_visited_on_error(visited, i), NULL);
 		j = 0;
 		while (j < map_width)
 			visited[i][j++] = 0;
 		i++;
 	}
 	return (visited);
+}
+
+void	clean_up_visited_on_error(char **visited, int i)
+{
+	while (--i >= 0)
+		free(visited[i]);
+	free(visited);
+	ft_printf("Error: Failed to allocate visited row\n");
 }
 
 void	clean_up_visited_map(char **visited, int map_height)
@@ -57,11 +58,8 @@ void	clean_up_visited_map(char **visited, int map_height)
 	i = 0;
 	while (i < map_height)
 	{
-		if (visited[i])
-		{
-			free(visited[i]);
-			visited[i] = NULL;
-		}
+		free(visited[i]);
+		visited[i] = NULL;
 		i++;
 	}
 	free(visited);
