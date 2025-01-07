@@ -55,6 +55,9 @@ typedef struct s_validation {
  *                         Function Prototypes
  *********************************************************************/
 
+void check_and_terminate(int condition, char **map, char **visited, int map_height);
+char **check_map(char **map);
+void tr(char **visited, char **map, int map_height);
 void	update_player_pos(char **map, int player_x, int player_y);
 void	print_updated_map(char **map);
 void	free_map_from_game(t_game *game);
@@ -90,7 +93,7 @@ int clctbls_rchble(char **map, int player_x, int player_y, t_map_state *state);
 int is_valid_character(char **map, int map_width, int map_height);
 void count_valid_move(t_game *game);
 int are_collectibles_collected(char **map);
-char    **parse_arguments_and_load_map(int argc, char **argv);
+char    **parse_args_and_load_map(int argc, char **argv);
 int	validate_map_struct_and_plyr_pos(char **map, int *player_x, int *player_y);
 char    **i_vm(int map_width, int map_height);
 void    clean_up_visited_map(char **visited, int map_height);

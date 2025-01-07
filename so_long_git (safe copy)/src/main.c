@@ -6,76 +6,56 @@
 /*   By: jbrol-ca <jbrol-ca@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/30 19:59:02 by jbrol-ca          #+#    #+#             */
-/*   Updated: 2025/01/07 18:37:53 by jbrol-ca         ###   ########.fr       */
+/*   Updated: 2025/01/07 23:02:28 by jbrol-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
 
-int main(int argc, char **argv)
+int	main(int argc, char **argv)
 {
-    char **map;
-    t_game game;
-    char **visited;
-    t_validation validation;
+	char		**map;
+	t_game		game;
+	char		**visited;
+	t_validation	validation;
 
-    // Parse map
-    map = parse_arguments_and_load_map(argc, argv);
-    if (!map)
-    {
-        ft_printf("Error: Map loading failed\n");
-        return (1);
-    }
-
-    game.map_state.map_width = ft_strlen(map[0]);
-    game.map_state.map_height = ft_strarr_len(map);
-
-    // Validate map structure
-    if (!validate_map_structure(map))
-    {
-        ft_printf("Debug: Invalid map structure\n");
-        terminate_program(NULL, map, game.map_state.map_height, "Error! Invalid map structure.");
-    }
-
-    // Validate player position and other checks
-    if (!validate_map_struct_and_plyr_pos(map, &game.player_x, &game.player_y))
-    {
-        ft_printf("Debug: Invalid player position\n");
-        terminate_program(NULL, map, game.map_state.map_height, "Error! Invalid player position.");
-    }
-
-    // Initialize state and visited map
-    init_st(&game.map_state, map);
-    visited = i_vm(game.map_state.map_width, game.map_state.map_height);
-    if (!visited)
-    {
-        ft_printf("Debug: Failed to allocate visited map\n");
-        terminate_program(NULL, map, game.map_state.map_height, "Error! Allocation failure.");
-    }
-
-    // Setup validation
-    validation.game = &game;
-    validation.map = map;
-    validation.state = &game.map_state;
-    validation.visited = visited;
-
-    // Check map validity
-    if (!check_map_validity(&validation))
-    {
-        ft_printf("Debug: Map validity check failed\n");
-        terminate_program(visited, map, game.map_state.map_height, "Error! Map validity failed.");
-    }
-
-    // Clean up visited map
-    clean_up_visited_map(visited, game.map_state.map_height);
-
-    // Start game
-    ft_printf("Debug: All checks passed, starting game...\n");
-    start_game(map);
-    return (0);
+if (!(map = parse_args_and_load_map(argc, argv)) || !map || !check_map(map))
+    return (1);
+	game.map_state.map_width = ft_strlen(map[0]);
+	game.map_state.map_height = ft_strarr_len(map);
+	if (!validate_map_structure(map))
+		tr(NULL, map, game.map_state.map_height);
+	if (!validate_map_struct_and_plyr_pos(map, &game.player_x, &game.player_y))
+		tr(NULL, map, game.map_state.map_height);
+	init_st(&game.map_state, map);
+	if (!(visited = i_vm(game.map_state.map_width, game.map_state.map_height)))
+		tr(NULL, map, game.map_state.map_height);
+	validation.game = &game;
+	validation.map = map;
+	validation.state = &game.map_state;
+	validation.visited = visited;
+	if (!check_map_validity(&validation))
+		tr(visited, map, game.map_state.map_height);
+	clean_up_visited_map(visited, game.map_state.map_height);
+	start_game(map);
+	return (0);
 }
 
+char **check_map(char **map)
+{
+    if (!map)
+    {
+        ft_printf("Error!\n");
+        return (NULL);
+    }
+    return (map);
+}
 
+void tr(char **visited, char **map, int map_height)
+{
+    ft_printf("Error!\n");
+    terminate_program(visited, map, map_height, "Error!");
+}
 
 void	terminate_program(char **visited, char **map, int map_height, const char *error_message)
 {

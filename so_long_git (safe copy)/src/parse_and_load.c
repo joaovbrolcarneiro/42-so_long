@@ -6,13 +6,13 @@
 /*   By: jbrol-ca <jbrol-ca@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 23:17:26 by jbrol-ca          #+#    #+#             */
-/*   Updated: 2025/01/07 20:16:00 by jbrol-ca         ###   ########.fr       */
+/*   Updated: 2025/01/07 22:58:51 by jbrol-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
 
-char	**parse_arguments_and_load_map(int argc, char **argv)
+char	**parse_args_and_load_map(int argc, char **argv)
 {
 	char	**map;
 
