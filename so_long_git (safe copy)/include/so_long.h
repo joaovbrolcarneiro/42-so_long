@@ -55,6 +55,12 @@ typedef struct s_validation {
  *                         Function Prototypes
  *********************************************************************/
 
+int	handle_esc_key(int keycode, t_game *game);
+int	update_player_position(int keycode, t_game *game, int *new_x, int *new_y);
+int	is_valid_move(t_game *game, int new_x, int new_y);
+int	check_exit_move(t_game *game, int keycode, int *new_x, int *new_y);
+void	update_adjacent_cell(int keycode, int *new_x, int *new_y, t_game *game);
+int	handle_collectible_move(t_game *game, int new_x, int new_y);
 int	print_map_error(void);
 void clean_up_visited_on_error(char **visited, int i);
 char	**handle_empty_file(char **map, int fd);
@@ -96,7 +102,7 @@ void    render_game(t_game *game, char **map);
 void    cleanup_game(t_game *game);
 int     find_player_x(char **map);
 int     find_player_y(char **map);
-int		handle_key_press(int key, t_game *game);
+int	handle_key_press(int keycode, t_game *game);
 void init_hooks(t_game *game);
 // Function to handle the window close event (clicking the 'X' button)
 int handle_window_close(t_game *game);
