@@ -6,7 +6,7 @@
 /*   By: jbrol-ca <jbrol-ca@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/02 16:57:56 by jbrol-ca          #+#    #+#             */
-/*   Updated: 2025/01/07 18:16:06 by jbrol-ca         ###   ########.fr       */
+/*   Updated: 2025/01/07 21:41:59 by jbrol-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,69 +16,52 @@
  * Initializes the window for the game.
  *********************************************************************/
 
-int init_window(t_game *game, char **map)
+int	init_mlx_and_window(t_game *game, char **map)
 {
-    int width, height;
+	int	map_width;
+	int	map_height;
 
-    game->mlx = mlx_init();
-    if (!game->mlx)
-    {
-        ft_printf("Error: MLX initialization failed\n");
-        return (0);
-    }
+	game->mlx = mlx_init();
+	if (!game->mlx)
+		return (print_error_and_return(NULL, 0));
+	map_width = ft_strlen(map[0]) * TILE_SIZE;
+	map_height = ft_strarr_len(map) * TILE_SIZE;
+	game->win = mlx_new_window(game->mlx, map_width, map_height, "So Long");
+	if (!game->win)
+	{
+		mlx_destroy_display(game->mlx);
+		return (print_error_and_return(NULL, 0));
+	}
+	return (1);
+}
 
-    int map_width = ft_strlen(map[0]) * TILE_SIZE;
-    int map_height = ft_strarr_len(map) * TILE_SIZE;
+int	load_textures(t_game *game, char *path, void **img)
+{
+	int	width;
+	int	height;
 
-    game->win = mlx_new_window(game->mlx, map_width, map_height, "So Long");
-    if (!game->win)
-    {
-        ft_printf("Error: Window creation failed\n");
-        mlx_destroy_display(game->mlx);
-        return (0);
-    }
+	*img = mlx_xpm_file_to_image(game->mlx, path, &width, &height);
+	if (!(*img))
+		return (print_error_and_return(NULL, 0));
+	return (1);
+}
 
-    game->wall_img = mlx_xpm_file_to_image(game->mlx, "textures/wall.xpm", &width, &height);
-    if (!game->wall_img)
-    {
-        ft_printf("Error: Failed to load wall texture\n");
-        return (0);
-    }
-    ft_printf("Wall texture loaded: %p (Width = %d, Height = %d)\n", game->wall_img, width, height);
+int	init_textures(t_game *game)
+{
+	if (!load_textures(game, "textures/wall.xpm", (void **)&game->wall_img) ||
+		!load_textures(game, "textures/player.xpm", (void **)&game->player_img) ||
+		!load_textures(game, "textures/collectible.xpm", (void **)&game->collectible_img) ||
+		!load_textures(game, "textures/floor.xpm", (void **)&game->floor_img) ||
+		!load_textures(game, "textures/exit.xpm", (void **)&game->exit_img))
+		return (0);
+	return (1);
+}
 
-    game->player_img = mlx_xpm_file_to_image(game->mlx, "textures/player.xpm", &width, &height);
-    if (!game->player_img)
-    {
-        ft_printf("Error: Failed to load player texture\n");
-        return (0);
-    }
-    ft_printf("Player texture loaded: %p (Width = %d, Height = %d)\n", game->player_img, width, height);
-
-    game->collectible_img = mlx_xpm_file_to_image(game->mlx, "textures/collectible.xpm", &width, &height);
-    if (!game->collectible_img)
-    {
-        ft_printf("Error: Failed to load collectible texture\n");
-        return (0);
-    }
-    ft_printf("Collectible texture loaded: %p (Width = %d, Height = %d)\n", game->collectible_img, width, height);
-
-    game->floor_img = mlx_xpm_file_to_image(game->mlx, "textures/floor.xpm", &width, &height);
-    if (!game->floor_img)
-    {
-        ft_printf("Error: Failed to load floor texture\n");
-        return (0);
-    }
-    ft_printf("Floor texture loaded: %p (Width = %d, Height = %d)\n", game->floor_img, width, height);
-
-    game->exit_img = mlx_xpm_file_to_image(game->mlx, "textures/exit.xpm", &width, &height);
-    if (!game->exit_img)
-    {
-        ft_printf("Error: Failed to load exit texture\n");
-        return (0);
-    }
-    ft_printf("Exit texture loaded: %p (Width = %d, Height = %d)\n", game->exit_img, width, height);
-
-    return (1);
+int	init_window(t_game *game, char **map)
+{
+	if (!init_mlx_and_window(game, map) || !init_textures(game))
+		return (0);
+	return (1);
 }
 
 

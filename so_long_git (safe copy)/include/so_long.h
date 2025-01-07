@@ -55,6 +55,10 @@ typedef struct s_validation {
  *                         Function Prototypes
  *********************************************************************/
 
+int	load_textures(t_game *game, char *path, void **img);
+int	init_textures(t_game *game);
+int	init_window(t_game *game, char **map);
+int	print_error_and_return(char **visited, int map_height);
 int	handle_esc_key(int keycode, t_game *game);
 int	update_player_position(int keycode, t_game *game, int *new_x, int *new_y);
 int	is_valid_move(t_game *game, int new_x, int new_y);
