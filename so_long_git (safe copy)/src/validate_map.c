@@ -6,7 +6,7 @@
 /*   By: jbrol-ca <jbrol-ca@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/30 19:57:11 by jbrol-ca          #+#    #+#             */
-/*   Updated: 2025/01/07 18:46:27 by jbrol-ca         ###   ########.fr       */
+/*   Updated: 2025/01/07 19:41:38 by jbrol-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,10 +41,13 @@ int	count_collectibles(char **map, t_map_state *state)
 int	validate_map(char **map, int x, int y, t_validation *validation)
 {
 	if (!is_valid_character(map, validation->state->map_width,
-			validation->state->map_height) || x < 0 || y < 0 ||
-		x >= validation->state->map_width || y >= validation->state->map_height ||
-		map[y][x] == '1' || validation->visited[y][x])
+			validation->state->map_height)
+		|| x < 0 || y < 0 || x >= validation->state->map_width
+		|| y >= validation->state->map_height || map[y][x] == '1'
+		|| validation->visited[y][x])
+	{
 		return (0);
+	}
 	validation->visited[y][x] = 1;
 	if (map[y][x] == 'E')
 		validation->state->exit_found = 1;
@@ -52,7 +55,7 @@ int	validate_map(char **map, int x, int y, t_validation *validation)
 	validate_map(map, x - 1, y, validation);
 	validate_map(map, x, y + 1, validation);
 	validate_map(map, x, y - 1, validation);
-	if (!are_all_collectibles_reachable(map, x, y, validation->state))
+	if (!clctbls_rchble(map, x, y, validation->state))
 	{
 		ft_printf("Error: Not all collectibles are reachable by the player\n");
 		return (0);
@@ -60,87 +63,59 @@ int	validate_map(char **map, int x, int y, t_validation *validation)
 	return (1);
 }
 
-int are_all_collectibles_reachable(char **map, int player_x, int player_y, t_map_state *state)
+int	clctbls_rchble(char **map, int player_x, int player_y, t_map_state *state)
 {
-    // Create a temporary visited map for reachability checks
-    char **visited = i_vm(state->map_width, state->map_height);
-    if (!visited)
-        return 0;
+	t_validation	validation;
+	int				reachable_collectibles;
 
-    // Count reachable collectibles from player's starting position
-    int reachable_collectibles = count_reachable_collectibles(map, player_x, player_y, state, visited);
-
-    // Free the temporary visited map
-    clean_up_visited_map(visited, state->map_height);
-
-    // Compare reachable collectibles with total collectibles
-    return reachable_collectibles == state->collectibles;
+	validation.state = state;
+	validation.visited = i_vm(state->map_width, state->map_height);
+	if (!validation.visited)
+		return (0);
+	reachable_collectibles = cnt_rechble(map, player_x, player_y, &validation);
+	clean_up_visited_map(validation.visited, state->map_height);
+	return (reachable_collectibles == state->collectibles);
 }
 
-int count_reachable_collectibles(char **map, int x, int y, t_map_state *state, char **visited)
+int	cnt_rechble(char **map, int x, int y, t_validation *validation)
 {
-    // Base case: Check for bounds, walls, or already visited cells
-    if (x < 0 || y < 0 || x >= state->map_width || y >= state->map_height || map[y][x] == '1' || visited[y][x])
-        return 0;
+	int	count;
 
-    // Mark the current cell as visited
-    visited[y][x] = 1;
-
-    int count = 0;
-    if (map[y][x] == 'C')
-        count++;
-
-    // Recursive calls to check adjacent cells (right, left, down, up)
-    int directions[4][2] = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
-    for (int i = 0; i < 4; i++) {
-        count += count_reachable_collectibles(map, x + directions[i][0], y + directions[i][1], state, visited);
-    }
-
-    return count;
+	if (x < 0 || y < 0 || x >= validation->state->map_width
+		|| y >= validation->state->map_height || map[y][x] == '1'
+		|| validation->visited[y][x])
+		return (0);
+	validation->visited[y][x] = 1;
+	count = 0;
+	if (map[y][x] == 'C')
+		count++;
+	count += cnt_rechble(map, x + 1, y, validation);
+	count += cnt_rechble(map, x - 1, y, validation);
+	count += cnt_rechble(map, x, y + 1, validation);
+	count += cnt_rechble(map, x, y - 1, validation);
+	return (count);
 }
 
-
-// Helper function to check for invalid characters in the entire map
-int is_valid_character(char **map, int map_width, int map_height)
+int	is_valid_character(char **map, int map_width, int map_height)
 {
-    for (int i = 0; i < map_height; i++) {
-        for (int j = 0; j < map_width; j++) {
-            if (map[i][j] != 'P' && map[i][j] != 'C' && map[i][j] != '0' && map[i][j] != '1' && map[i][j] != 'E') {
-                ft_printf("Invalid character '%c' found at (%d, %d)\n", map[i][j], j, i);
-                return 0; // Return error if invalid character is found
-            }
-        }
-    }
-    return 1; // All characters are valid
+	int	i;
+	int	j;
+
+	i = 0;
+	while (i < map_height)
+	{
+		j = 0;
+		while (j < map_width)
+		{
+			if (map[i][j] != 'P' && map[i][j] != 'C'
+				&& map[i][j] != '0' && map[i][j] != '1' && map[i][j] != 'E')
+			{
+				ft_printf("Error: Invalid character found.");
+				return (0);
+			}
+			j++;
+		}
+		i++;
+	}
+	return (1);
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
