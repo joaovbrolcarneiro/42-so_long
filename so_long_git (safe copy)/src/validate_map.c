@@ -6,7 +6,7 @@
 /*   By: jbrol-ca <jbrol-ca@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/30 19:57:11 by jbrol-ca          #+#    #+#             */
-/*   Updated: 2025/01/07 18:38:23 by jbrol-ca         ###   ########.fr       */
+/*   Updated: 2025/01/07 18:46:27 by jbrol-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,47 +38,27 @@ int	count_collectibles(char **map, t_map_state *state)
 }
 
 // Function to validate the map
-int validate_map(char **map, int x, int y, t_validation *validation)
+int	validate_map(char **map, int x, int y, t_validation *validation)
 {
-    t_map_state *state = validation->state;
-    char **visited = validation->visited;
-
-    // Check if the map contains invalid characters
-    if (!is_valid_character(map, state->map_width, state->map_height)) {
-        ft_printf("Error: Map contains invalid characters\n");
-        return 0;
-    }
-
-    // Check for bounds, invalid cells, or already visited cells
-    if (x < 0 || y < 0 || x >= state->map_width || y >= state->map_height || map[y][x] == '1' || visited[y][x])
-        return 0; // Out of bounds, wall ('1'), or already visited cell
-
-    // Mark the current cell as visited in the visited map
-    visited[y][x] = 1;
-
-    // Update state if an exit or collectible is found
-    if (map[y][x] == 'E') {
-        state->exit_found = 1;
-        ft_printf("Exit found at (%d, %d)\n", x, y);
-    } else if (map[y][x] == 'C') {
-        ft_printf("Collectible found at (%d, %d)\n", x, y);
-    }
-
-    // Recursive calls to check adjacent cells (right, left, down, up)
-    int directions[4][2] = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
-    for (int i = 0; i < 4; i++) {
-        validate_map(map, x + directions[i][0], y + directions[i][1], validation);
-    }
-
-    // After marking visited cells, check if all collectibles are reachable
-    if (!are_all_collectibles_reachable(map, x, y, state)) {
-        ft_printf("Error: Not all collectibles are reachable by the player\n");
-        return 0;
-    }
-
-    return 1;
+	if (!is_valid_character(map, validation->state->map_width,
+			validation->state->map_height) || x < 0 || y < 0 ||
+		x >= validation->state->map_width || y >= validation->state->map_height ||
+		map[y][x] == '1' || validation->visited[y][x])
+		return (0);
+	validation->visited[y][x] = 1;
+	if (map[y][x] == 'E')
+		validation->state->exit_found = 1;
+	validate_map(map, x + 1, y, validation);
+	validate_map(map, x - 1, y, validation);
+	validate_map(map, x, y + 1, validation);
+	validate_map(map, x, y - 1, validation);
+	if (!are_all_collectibles_reachable(map, x, y, validation->state))
+	{
+		ft_printf("Error: Not all collectibles are reachable by the player\n");
+		return (0);
+	}
+	return (1);
 }
-
 
 int are_all_collectibles_reachable(char **map, int player_x, int player_y, t_map_state *state)
 {
