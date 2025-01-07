@@ -6,7 +6,7 @@
 /*   By: jbrol-ca <jbrol-ca@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/30 19:57:11 by jbrol-ca          #+#    #+#             */
-/*   Updated: 2025/01/06 23:23:26 by jbrol-ca         ###   ########.fr       */
+/*   Updated: 2025/01/07 01:48:14 by jbrol-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,20 +15,27 @@
 #include "so_long.h"
 
 
-int count_collectibles(char **map, t_map_state *state) {
-    int collectibles = 0;
+int	count_collectibles(char **map, t_map_state *state)
+{
+	int	collectibles;
+	int	x;
+	int	y;
 
-    // Iterate over the entire map and count collectibles ('C')
-    for (int y = 0; y < state->map_height; y++) {
-        for (int x = 0; x < state->map_width; x++) {
-            if (map[y][x] == 'C') {
-                collectibles++;
-            }
-        }
-    }
-
-    ft_printf("Total collectibles found: %d\n", collectibles);
-    return collectibles;
+	collectibles = 0;
+	y = 0;
+	while (y < state->map_height)
+	{
+		x = 0;
+		while (x < state->map_width)
+		{
+			if (map[y][x] == 'C')
+				collectibles++;
+			x++;
+		}
+		y++;
+	}
+	ft_printf("Total collectibles found: %d\n", collectibles);
+	return (collectibles);
 }
 
 // Function to validate the map
