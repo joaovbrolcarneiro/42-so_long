@@ -6,7 +6,7 @@
 /*   By: jbrol-ca <jbrol-ca@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/02 16:57:56 by jbrol-ca          #+#    #+#             */
-/*   Updated: 2025/01/07 21:41:59 by jbrol-ca         ###   ########.fr       */
+/*   Updated: 2025/01/07 21:53:55 by jbrol-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,26 +48,32 @@ int	load_textures(t_game *game, char *path, void **img)
 
 int	init_textures(t_game *game)
 {
-	if (!load_textures(game, "textures/wall.xpm", (void **)&game->wall_img) ||
-		!load_textures(game, "textures/player.xpm", (void **)&game->player_img) ||
-		!load_textures(game, "textures/collectible.xpm", (void **)&game->collectible_img) ||
-		!load_textures(game, "textures/floor.xpm", (void **)&game->floor_img) ||
-		!load_textures(game, "textures/exit.xpm", (void **)&game->exit_img))
+	if (!load_textures(game, "textures/wall.xpm",
+			(void **)&game->wall_img))
+		return (0);
+	if (!load_textures(game, "textures/player.xpm",
+			(void **)&game->player_img))
+		return (0);
+	if (!load_textures(game, "textures/collectible.xpm",
+			(void **)&game->collectible_img))
+		return (0);
+	if (!load_textures(game, "textures/floor.xpm",
+			(void **)&game->floor_img))
+		return (0);
+	if (!load_textures(game, "textures/exit.xpm",
+			(void **)&game->exit_img))
 		return (0);
 	return (1);
 }
 
 int	init_window(t_game *game, char **map)
 {
-	if (!init_mlx_and_window(game, map) || !init_textures(game))
+	if (!init_mlx_and_window(game, map))
+		return (0);
+	if (!init_textures(game))
 		return (0);
 	return (1);
 }
-
-
-/* *********************************************************************
- * Renders the game (map and objects like player, collectibles, etc.)
- *********************************************************************/
 
 void render_game(t_game *game, char **map)
 {
