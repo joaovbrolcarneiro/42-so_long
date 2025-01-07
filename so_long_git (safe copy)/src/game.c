@@ -6,7 +6,7 @@
 /*   By: jbrol-ca <jbrol-ca@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/02 18:05:14 by jbrol-ca          #+#    #+#             */
-/*   Updated: 2025/01/07 18:08:35 by jbrol-ca         ###   ########.fr       */
+/*   Updated: 2025/01/07 20:32:03 by jbrol-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,53 +16,43 @@
  * Starts the game and runs the main game loop.
  *********************************************************************/
 
-int start_game(char **map)
+int	start_game(char **map)
 {
-    t_game game;
+	t_game	game;
 
-    // Set player position
-    game.player_x = find_player_x(map);
-    game.player_y = find_player_y(map);
-    ft_printf("Player position initialized: x=%d, y=%d\n", game.player_x, game.player_y);
-
-    // Assign the map to the game structure
-    game.map = map;
-
-    // Initialize the valid movements counter
-    game.valid_movements = 0;
-
-    // Initialize the window
-    if (!init_window(&game, map))
-        return (ft_error("Error: Unable to initialize the window"));
-
-    // Initialize the key event hooks
-    init_hooks(&game);
-
-    // Main game loop
-    mlx_loop(game.mlx);  // Start the event loop to process key presses and render the game
-
-    cleanup_game(&game);  // Cleanup after the game loop ends
-    return (0);
+	game.player_x = find_player_x(map);
+	game.player_y = find_player_y(map);
+	ft_printf("Player position initialized");
+	game.map = map;
+	game.valid_movements = 0;
+	if (!init_window(&game, map))
+		return (ft_error("Error: Unable to initialize the window"));
+	init_hooks(&game);
+	mlx_loop(game.mlx);
+	cleanup_game(&game);
+	return (0);
 }
 
-
-
-// Function to check if all collectibles are collected
-int are_collectibles_collected(char **map)
+int	are_collectibles_collected(char **map)
 {
-    for (int y = 0; map[y] != NULL; y++)
-    {
-        for (int x = 0; map[y][x] != '\0'; x++)
-        {
-            if (map[y][x] == 'C')  // If a collectible is found, return false
-                return 0;
-        }
-    }
-    return 1;  // All collectibles have been collected
+	int	y;
+	int	x;
+
+	y = 0;
+	while (map[y] != NULL)
+	{
+		x = 0;
+		while (map[y][x] != '\0')
+		{
+			if (map[y][x] == 'C')
+				return (0);
+			x++;
+		}
+		y++;
+	}
+	return (1);
 }
 
-// Function to handle key press and check for "You Win"
-// Function to handle key press and check for valid movements
 int handle_key_press(int keycode, t_game *game)
 {
     // ESC key: Exit the game

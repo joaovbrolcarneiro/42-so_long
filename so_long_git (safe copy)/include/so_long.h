@@ -55,6 +55,7 @@ typedef struct s_validation {
  *                         Function Prototypes
  *********************************************************************/
 
+int	print_map_error(void);
 void clean_up_visited_on_error(char **visited, int i);
 char	**handle_empty_file(char **map, int fd);
 int	count_player_and_exit(char **map, int *player_count, int *exit_count);
