@@ -6,7 +6,7 @@
 /*   By: jbrol-ca <jbrol-ca@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/08 15:44:57 by jbrol-ca          #+#    #+#             */
-/*   Updated: 2025/01/08 21:00:40 by jbrol-ca         ###   ########.fr       */
+/*   Updated: 2025/01/08 21:02:32 by jbrol-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,7 @@ typedef struct s_player_pos
  *                         Function Prototypes
  *********************************************************************/
 
+void	init_player_positions(t_player_pos *pos, t_game *game);
 int		is_wall_behind_exit(t_game *game, int x, int y, int keycode);
 char	**check_map(char **map);
 void	tr(char **visited, char **map, int map_height);
