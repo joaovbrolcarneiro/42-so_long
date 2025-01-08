@@ -21,7 +21,7 @@
 
 typedef struct s_map_state {
     int collectibles;
-    int exit_found;
+    int ex_fnd;
     int map_width;
     int map_height;
     int collectible_visited;

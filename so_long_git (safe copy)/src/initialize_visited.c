@@ -6,7 +6,7 @@
 /*   By: jbrol-ca <jbrol-ca@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 23:16:48 by jbrol-ca          #+#    #+#             */
-/*   Updated: 2025/01/07 18:28:26 by jbrol-ca         ###   ########.fr       */
+/*   Updated: 2025/01/08 15:09:37 by jbrol-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void	init_st(t_map_state *state, char **map)
 {
 	state->collectibles = count_collectibles(map, state);
-	state->exit_found = 0;
+	state->ex_fnd = 0;
 }
 
 char	**i_vm(int map_width, int map_height)
