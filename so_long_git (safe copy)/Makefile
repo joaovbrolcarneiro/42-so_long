@@ -1,5 +1,17 @@
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: jbrol-ca <marvin@42.fr>                    +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2025/01/08 21:20:14 by jbrol-ca          #+#    #+#              #
+#    Updated: 2025/01/08 21:20:22 by jbrol-ca         ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
+
 # Compiler and Flags
-CC = gcc
+CC = cc
 CFLAGS = -Wall -Wextra -Werror -g
 
 # Directories
@@ -11,10 +23,25 @@ LIBFT_DIR = libft
 
 # Files
 NAME = so_long
-SRCS = $(wildcard $(SRC_DIR)/*.c)
+SRCS = \
+	$(SRC_DIR)/free.c \
+	$(SRC_DIR)/in_game.c \
+	$(SRC_DIR)/movements_collisions.c \
+	$(SRC_DIR)/utils2.c \
+	$(SRC_DIR)/game.c \
+	$(SRC_DIR)/initialize_visited.c \
+	$(SRC_DIR)/parse_and_load.c \
+	$(SRC_DIR)/utils.c \
+	$(SRC_DIR)/game_window.c \
+	$(SRC_DIR)/main.c \
+	$(SRC_DIR)/render.c \
+	$(SRC_DIR)/validate_map.c \
+	$(SRC_DIR)/handle_game.c \
+	$(SRC_DIR)/map.c \
+	$(SRC_DIR)/update.c \
+	$(SRC_DIR)/validation.c
 OBJS = $(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
 
-# MLX Flags and Includes
 INCLUDES = -I$(MLX_DIR) -Iinclude -I$(GNL_DIR) -I$(LIBFT_DIR)
 MLX_FLAGS = -L$(MLX_DIR) -lmlx -L/usr/lib/X11 -lXext -lX11
 
@@ -51,4 +78,3 @@ fclean: clean
 	@make fclean -C $(LIBFT_DIR)
 
 re: fclean all
-
