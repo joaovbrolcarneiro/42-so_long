@@ -6,7 +6,7 @@
 /*   By: jbrol-ca <jbrol-ca@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 22:21:01 by jbrol-ca          #+#    #+#             */
-/*   Updated: 2025/01/07 22:23:56 by jbrol-ca         ###   ########.fr       */
+/*   Updated: 2025/01/08 18:35:28 by jbrol-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@ int	check_exit_move(t_game *game, int keycode, int *new_x, int *new_y)
 	{
 		if (are_collectibles_collected(game->map))
 		{
+			game->valid_movements++;
+			ft_printf("Win! Total valid moves: %d\n", game->valid_movements);
 			cleanup_game(game);
 			exit(0);
 		}
