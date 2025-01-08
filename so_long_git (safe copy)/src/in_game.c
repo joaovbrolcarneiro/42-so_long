@@ -6,7 +6,7 @@
 /*   By: jbrol-ca <jbrol-ca@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 22:21:01 by jbrol-ca          #+#    #+#             */
-/*   Updated: 2025/01/08 19:57:31 by jbrol-ca         ###   ########.fr       */
+/*   Updated: 2025/01/08 20:56:52 by jbrol-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int	check_exit_move(t_game *game, int keycode, int *new_x, int *new_y)
 		}
 		else if (is_wall_behind_exit(game, *new_x, *new_y, keycode))
 		{
-			return (0); // Prevent moving past exit if there's a wall behind
+			return (0);
 		}
 		update_adjacent_cell(keycode, new_x, new_y, game);
 	}
@@ -34,23 +34,22 @@ int	check_exit_move(t_game *game, int keycode, int *new_x, int *new_y)
 
 int	is_wall_behind_exit(t_game *game, int x, int y, int keycode)
 {
-	int	behind_x = x;
-	int	behind_y = y;
+	int	behind_x;
+	int	behind_y;
 
-	// Calculate the position behind the exit based on movement direction
-	if (keycode == KEY_UP) 
+	behind_x = x;
+	behind_y = y;
+	if (keycode == KEY_UP)
 		behind_y -= 1;
-	else if (keycode == KEY_DOWN) 
+	else if (keycode == KEY_DOWN)
 		behind_y += 1;
-	else if (keycode == KEY_LEFT) 
+	else if (keycode == KEY_LEFT)
 		behind_x -= 1;
-	else if (keycode == KEY_RIGHT) 
+	else if (keycode == KEY_RIGHT)
 		behind_x += 1;
-
-	// Check if the behind cell is a wall
-	if (game->map[behind_y][behind_x] == '1') 
-		return (1); // Wall behind exit
-	return (0); // No wall behind exit
+	if (game->map[behind_y][behind_x] == '1')
+		return (1);
+	return (0);
 }
 
 void	update_adjacent_cell(int keycode, int *new_x, int *new_y, t_game *game)

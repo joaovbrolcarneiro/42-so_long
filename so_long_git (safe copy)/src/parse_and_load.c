@@ -6,7 +6,7 @@
 /*   By: jbrol-ca <jbrol-ca@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 23:17:26 by jbrol-ca          #+#    #+#             */
-/*   Updated: 2025/01/07 22:58:51 by jbrol-ca         ###   ########.fr       */
+/*   Updated: 2025/01/08 20:58:48 by jbrol-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,4 +62,12 @@ int	check_player_and_exit(char **map)
 	}
 	ft_printf("Debug: Player and exit validation passed\n");
 	return (1);
+}
+
+void	init_player_positions(t_player_pos *pos, t_game *game)
+{
+	pos->previous_x = game->player_x;
+	pos->previous_y = game->player_y;
+	pos->new_x = game->player_x;
+	pos->new_y = game->player_y;
 }

@@ -6,7 +6,7 @@
 /*   By: jbrol-ca <jbrol-ca@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/08 15:44:57 by jbrol-ca          #+#    #+#             */
-/*   Updated: 2025/01/08 19:58:00 by jbrol-ca         ###   ########.fr       */
+/*   Updated: 2025/01/08 21:00:40 by jbrol-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,14 @@ typedef struct s_validation
 	t_map_state	*state;
 	char		**visited;
 }	t_validation;
+
+typedef struct s_player_pos
+{
+	int	previous_x;
+	int	previous_y;
+	int	new_x;
+	int	new_y;
+}	t_player_pos;
 
 /* *********************************************************************
  *                         Function Prototypes
