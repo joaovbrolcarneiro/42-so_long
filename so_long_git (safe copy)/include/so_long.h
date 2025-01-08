@@ -6,7 +6,7 @@
 /*   By: jbrol-ca <jbrol-ca@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/08 15:44:57 by jbrol-ca          #+#    #+#             */
-/*   Updated: 2025/01/08 16:01:28 by jbrol-ca         ###   ########.fr       */
+/*   Updated: 2025/01/08 19:58:00 by jbrol-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,7 @@ typedef struct s_validation
  *                         Function Prototypes
  *********************************************************************/
 
+int		is_wall_behind_exit(t_game *game, int x, int y, int keycode);
 char	**check_map(char **map);
 void	tr(char **visited, char **map, int map_height);
 void	update_player_pos(char **map, int player_x, int player_y);

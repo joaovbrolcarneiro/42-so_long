@@ -6,7 +6,7 @@
 /*   By: jbrol-ca <jbrol-ca@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 22:21:01 by jbrol-ca          #+#    #+#             */
-/*   Updated: 2025/01/08 18:35:28 by jbrol-ca         ###   ########.fr       */
+/*   Updated: 2025/01/08 19:57:31 by jbrol-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,34 @@ int	check_exit_move(t_game *game, int keycode, int *new_x, int *new_y)
 			cleanup_game(game);
 			exit(0);
 		}
+		else if (is_wall_behind_exit(game, *new_x, *new_y, keycode))
+		{
+			return (0); // Prevent moving past exit if there's a wall behind
+		}
 		update_adjacent_cell(keycode, new_x, new_y, game);
 	}
 	return (1);
+}
+
+int	is_wall_behind_exit(t_game *game, int x, int y, int keycode)
+{
+	int	behind_x = x;
+	int	behind_y = y;
+
+	// Calculate the position behind the exit based on movement direction
+	if (keycode == KEY_UP) 
+		behind_y -= 1;
+	else if (keycode == KEY_DOWN) 
+		behind_y += 1;
+	else if (keycode == KEY_LEFT) 
+		behind_x -= 1;
+	else if (keycode == KEY_RIGHT) 
+		behind_x += 1;
+
+	// Check if the behind cell is a wall
+	if (game->map[behind_y][behind_x] == '1') 
+		return (1); // Wall behind exit
+	return (0); // No wall behind exit
 }
 
 void	update_adjacent_cell(int keycode, int *new_x, int *new_y, t_game *game)
