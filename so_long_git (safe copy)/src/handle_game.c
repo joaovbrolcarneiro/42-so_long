@@ -6,7 +6,7 @@
 /*   By: jbrol-ca <jbrol-ca@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 21:27:14 by jbrol-ca          #+#    #+#             */
-/*   Updated: 2025/01/08 20:58:39 by jbrol-ca         ###   ########.fr       */
+/*   Updated: 2025/01/08 21:34:36 by jbrol-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,6 @@ int	handle_key_press(int keycode, t_game *game)
 int	handle_window_close(t_game *game)
 {
 	ft_printf("Window closed by user.\n");
-	mlx_destroy_window(game->mlx, game->win);
 	cleanup_game(game);
 	exit(0);
 	return (0);
