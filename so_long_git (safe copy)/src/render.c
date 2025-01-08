@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   render.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jbrol-ca <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: jbrol-ca <jbrol-ca@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 22:18:53 by jbrol-ca          #+#    #+#             */
-/*   Updated: 2025/01/07 22:18:54 by jbrol-ca         ###   ########.fr       */
+/*   Updated: 2025/01/08 21:40:27 by jbrol-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@ void	render_tile(t_game *game, char tile, int x, int y)
 			game->wall_img, x * TILE_SIZE, y * TILE_SIZE);
 	else if (tile == 'P')
 	{
-		ft_printf("Rendering player at: (%d, %d)\n", x, y);
 		mlx_put_image_to_window(game->mlx, game->win,
 			game->player_img, x * TILE_SIZE, y * TILE_SIZE);
 	}

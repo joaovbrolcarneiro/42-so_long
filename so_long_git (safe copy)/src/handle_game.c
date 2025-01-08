@@ -6,7 +6,7 @@
 /*   By: jbrol-ca <jbrol-ca@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 21:27:14 by jbrol-ca          #+#    #+#             */
-/*   Updated: 2025/01/08 21:34:36 by jbrol-ca         ###   ########.fr       */
+/*   Updated: 2025/01/08 21:41:44 by jbrol-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,8 @@ int	handle_window_close(t_game *game)
 
 int	handle_resize(int width, int height)
 {
-	ft_printf("Window resized to: %dx%d\n", width, height);
+	(void)width;
+	(void)height;
 	return (0);
 }
 
