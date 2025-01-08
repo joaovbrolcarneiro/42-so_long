@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handle_game.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jbrol-ca <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: jbrol-ca <jbrol-ca@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 21:27:14 by jbrol-ca          #+#    #+#             */
-/*   Updated: 2025/01/07 21:27:19 by jbrol-ca         ###   ########.fr       */
+/*   Updated: 2025/01/08 15:57:40 by jbrol-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int	handle_key_press(int keycode, t_game *game)
 	new_player_y = game->player_y;
 	if (!handle_esc_key(keycode, game))
 		return (0);
-	if (!update_player_position(keycode, game, &new_player_x, &new_player_y))
+	if (!update_player_posit(keycode, game, &new_player_x, &new_player_y))
 		return (0);
 	if (!is_valid_move(game, new_player_x, new_player_y))
 		return (0);

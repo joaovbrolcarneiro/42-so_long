@@ -6,7 +6,7 @@
 /*   By: jbrol-ca <jbrol-ca@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/02 18:05:14 by jbrol-ca          #+#    #+#             */
-/*   Updated: 2025/01/07 22:08:15 by jbrol-ca         ###   ########.fr       */
+/*   Updated: 2025/01/08 15:57:36 by jbrol-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ int	are_collectibles_collected(char **map)
 	return (1);
 }
 
-int	update_player_position(int keycode, t_game *game, int *new_x, int *new_y)
+int	update_player_posit(int keycode, t_game *game, int *new_x, int *new_y)
 {
 	(void)game;
 	if (keycode == KEY_UP)

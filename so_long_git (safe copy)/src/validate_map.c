@@ -6,7 +6,7 @@
 /*   By: jbrol-ca <jbrol-ca@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/30 19:57:11 by jbrol-ca          #+#    #+#             */
-/*   Updated: 2025/01/08 15:24:40 by jbrol-ca         ###   ########.fr       */
+/*   Updated: 2025/01/08 15:58:57 by jbrol-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ int	validate_map(char **map, int x, int y, t_validation *validation)
 	validate_map(map, x - 1, y, validation);
 	validate_map(map, x, y + 1, validation);
 	validate_map(map, x, y - 1, validation);
-	if (!clctbls_rchble(map, x, y, validation->state))
+	if (!cs_rchbl(map, x, y, validation->state))
 	{
 		ft_printf("Error: Not all collectibles are reachable by the player\n");
 		return (0);
@@ -62,7 +62,7 @@ int	validate_map(char **map, int x, int y, t_validation *validation)
 	return (1);
 }
 
-int	clctbls_rchble(char **map, int player_x, int player_y, t_map_state *state)
+int	cs_rchbl(char **map, int player_x, int player_y, t_map_state *state)
 {
 	t_validation	validation;
 	int				reachable_collectibles;

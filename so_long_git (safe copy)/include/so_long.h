@@ -6,7 +6,7 @@
 /*   By: jbrol-ca <jbrol-ca@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/08 15:44:57 by jbrol-ca          #+#    #+#             */
-/*   Updated: 2025/01/08 15:54:37 by jbrol-ca         ###   ########.fr       */
+/*   Updated: 2025/01/08 16:01:28 by jbrol-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ int		init_textures(t_game *game);
 int		init_window(t_game *game, char **map);
 int		print_error_and_return(char **visited, int map_height);
 int		handle_esc_key(int keycode, t_game *game);
-int		update_player_position(int keycode, t_game *game, int *new_x, int *new_y);
+int		update_player_posit(int keycode, t_game *game, int *new_x, int *new_y);
 int		is_valid_move(t_game *game, int new_x, int new_y);
 int		check_exit_move(t_game *game, int keycode, int *new_x, int *new_y);
 void	update_adjacent_cell(int keycode, int *new_x, int *new_y, t_game *game);
@@ -102,7 +102,7 @@ int		check_map_validity(t_validation *validation);
 void	init_st(t_map_state *state, char **map);
 int		print_error_and_return(char **visited, int map_height);
 int		cnt_rechble(char **map, int x, int y, t_validation *validation);
-int		clctbls_rchble(char **map, int player_x, int player_y, t_map_state *state);
+int		cs_rchbl(char **map, int player_x, int player_y, t_map_state *state);
 int		is_valid_character(char **map, int map_width, int map_height);
 void	count_valid_move(t_game *game);
 int		are_collectibles_collected(char **map);
@@ -135,7 +135,7 @@ int		handle_window_close(t_game *game);
 void	strip_newline(char *line);
 int		handle_resize(int width, int height);
 int		init_window(t_game *game, char **map);
-void	terminate_program(char **visited, char **map, int map_height, const char *error_message);
+void	trmnt_prg(char **visited, char **map, int map_height, const char *msg);
 void	free_map(char **map, int map_height);
 
 #endif

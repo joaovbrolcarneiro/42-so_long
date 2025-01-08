@@ -6,7 +6,7 @@
 /*   By: jbrol-ca <jbrol-ca@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/08 15:22:45 by jbrol-ca          #+#    #+#             */
-/*   Updated: 2025/01/08 15:28:06 by jbrol-ca         ###   ########.fr       */
+/*   Updated: 2025/01/08 16:02:30 by jbrol-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,14 +42,14 @@ void	free_map(char **map, int map_height)
 
 void	tr(char **visited, char **map, int map_height)
 {
-	terminate_program(visited, map, map_height, "Error!");
+	trmnt_prg(visited, map, map_height, "Error!");
 }
 
-void	terminate_program(char **visited, char **map, int map_height,
-		const char *error_message)
+void	trmnt_prg(char **visited, char **map, int map_height,
+		const char *msg)
 {
-	if (error_message)
-		ft_printf("%s\n", error_message);
+	if (msg)
+		ft_printf("%s\n", msg);
 	if (visited)
 		clean_up_visited_map(visited, map_height);
 	if (map)
