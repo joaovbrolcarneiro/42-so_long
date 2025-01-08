@@ -6,7 +6,7 @@
 /*   By: jbrol-ca <jbrol-ca@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 23:21:11 by jbrol-ca          #+#    #+#             */
-/*   Updated: 2025/01/07 20:14:31 by jbrol-ca         ###   ########.fr       */
+/*   Updated: 2025/01/08 14:56:32 by jbrol-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int	print_map_error(void)
 	return (0);
 }
 
-int	validate_map_structure(char **map)
+int	vms(char **map)
 {
 	size_t	row_length;
 
@@ -36,7 +36,7 @@ int	validate_map_structure(char **map)
 	return (1);
 }
 
-int	validate_map_struct_and_plyr_pos(char **map, int *player_x, int *player_y)
+int	vmsnpp(char **map, int *player_x, int *player_y)
 {
 	int	player_count;
 	int	i;

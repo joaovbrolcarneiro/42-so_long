@@ -6,7 +6,7 @@
 /*   By: jbrol-ca <jbrol-ca@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/30 19:59:02 by jbrol-ca          #+#    #+#             */
-/*   Updated: 2025/01/07 23:02:28 by jbrol-ca         ###   ########.fr       */
+/*   Updated: 2025/01/08 15:03:22 by jbrol-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,21 +14,21 @@
 
 int	main(int argc, char **argv)
 {
-	char		**map;
-	t_game		game;
-	char		**visited;
+	char			**map;
+	t_game			game;
+	char			**visited;
 	t_validation	validation;
 
-if (!(map = parse_args_and_load_map(argc, argv)) || !map || !check_map(map))
-    return (1);
+	map = parse_args_and_load_map(argc, argv);
+	if (!map || !check_map(map))
+		return (1);
 	game.map_state.map_width = ft_strlen(map[0]);
 	game.map_state.map_height = ft_strarr_len(map);
-	if (!validate_map_structure(map))
-		tr(NULL, map, game.map_state.map_height);
-	if (!validate_map_struct_and_plyr_pos(map, &game.player_x, &game.player_y))
+	if (!vms(map) || !vmsnpp(map, &game.player_x, &game.player_y))
 		tr(NULL, map, game.map_state.map_height);
 	init_st(&game.map_state, map);
-	if (!(visited = i_vm(game.map_state.map_width, game.map_state.map_height)))
+	visited = i_vm(game.map_state.map_width, game.map_state.map_height);
+	if (!visited)
 		tr(NULL, map, game.map_state.map_height);
 	validation.game = &game;
 	validation.map = map;
@@ -41,23 +41,20 @@ if (!(map = parse_args_and_load_map(argc, argv)) || !map || !check_map(map))
 	return (0);
 }
 
-char **check_map(char **map)
+char	**check_map(char **map)
 {
-    if (!map)
-    {
-        ft_printf("Error!\n");
-        return (NULL);
-    }
-    return (map);
+	if (!map)
+		return (ft_printf("Error!\n"), NULL);
+	return (map);
 }
 
-void tr(char **visited, char **map, int map_height)
+void	tr(char **visited, char **map, int map_height)
 {
-    ft_printf("Error!\n");
-    terminate_program(visited, map, map_height, "Error!");
+	terminate_program(visited, map, map_height, "Error!");
 }
 
-void	terminate_program(char **visited, char **map, int map_height, const char *error_message)
+void	terminate_program(char **visited, char **map, \
+int map_height, const char *error_message)
 {
 	if (error_message)
 		ft_printf("%s\n", error_message);
@@ -65,52 +62,37 @@ void	terminate_program(char **visited, char **map, int map_height, const char *e
 		clean_up_visited_map(visited, map_height);
 	if (map)
 		free_map(map, map_height);
-	exit(1); // Immediately terminate program
+	exit(EXIT_FAILURE);
 }
 
-
-int check_map_validity(t_validation *validation)
+int	check_map_validity(t_validation *validation)
 {
-    ft_printf("Debug: Validating map...\n");
+	int	y;
+	int	x;
+	int	exit_count;
 
-    // Call validate_map with the validation struct
-    if (!validate_map(validation->map, validation->game->player_x,
-            validation->game->player_y, validation))
-    {
-        ft_printf("Debug: Map failed main validation\n");
-        return (0);
-    }
-
-    if (validation->state->collectibles == 0)
-    {
-        ft_printf("Debug: No collectibles found\n");
-        return (0);
-    }
-
-    if (validation->state->exit_found == 0)
-    {
-        ft_printf("Debug: No exit found\n");
-        return (0);
-    }
-
-    // Ensure only one exit exists
-    int exit_count = 0;
-    for (int y = 0; y < validation->state->map_height; y++) {
-        for (int x = 0; x < validation->state->map_width; x++) {
-            if (validation->map[y][x] == 'E') {
-                exit_count++;
-            }
-        }
-    }
-    if (exit_count != 1) {
-        ft_printf("Error: Multiple exits detected\n");
-        return (0);
-    }
-
-    ft_printf("Debug: Map validated successfully\n");
-    return (1);
+	if (!validate_map(validation->map, validation->game->player_x,
+			validation->game->player_y, validation))
+		return (0);
+	if (validation->state->collectibles == 0 || validation->state->exit_found == 0)
+		return (0);
+	exit_count = 0;
+	y = 0;
+	while (y < validation->state->map_height)
+	{
+		x = 0;
+		while (x < validation->state->map_width)
+		{
+			if (validation->map[y][x] == 'E')
+				exit_count++;
+			x++;
+		}
+		y++;
+	}
+	if (exit_count != 1)
+		return (0);
+	return (1);
 }
-
 
 int	print_error_and_return(char **visited, int map_height)
 {
